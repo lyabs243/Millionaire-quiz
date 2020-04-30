@@ -12,6 +12,7 @@ class ButtonCircle extends StatelessWidget {
   Widget build(BuildContext context) {
     return RawMaterialButton(
       onPressed: onPress,
+      highlightColor: Colors.blue,
       elevation: 2.0,
       fillColor: this.fillColor,
       child: this.icon,
