@@ -36,7 +36,7 @@ class _ButtonQuizState extends State<ButtonQuiz>{
             width: MediaQuery.of(context).size.width * 75 / 100,
             child: new RaisedButton(
               onPressed: this.widget.buttonAction,
-              highlightColor: Colors.blue,
+              highlightColor: Colors.orange,
               child: Row(
                 children: <Widget>[
                   SizedBox(
