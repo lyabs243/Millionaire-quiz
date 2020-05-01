@@ -3,9 +3,11 @@ import 'package:flutter/material.dart';
 class ButtonQuiz extends StatefulWidget{
 
   String title;
+  String textLeft;
+  TextAlign textAlign;
   Function buttonAction;
 
-  ButtonQuiz(this.title, this.buttonAction);
+  ButtonQuiz(this.title, this.buttonAction, {this.textAlign: TextAlign.left, this.textLeft: ''});
 
   @override
   _ButtonQuizState createState() {
@@ -35,7 +37,30 @@ class _ButtonQuizState extends State<ButtonQuiz>{
             child: new RaisedButton(
               onPressed: this.widget.buttonAction,
               highlightColor: Colors.blue,
-              child: new Text(this.widget.title,textScaleFactor: 1.2,),
+              child: Row(
+                children: <Widget>[
+                  SizedBox(
+                    width: MediaQuery.of(context).size.width * 68 / 100,
+                    child: RichText(
+                      textAlign: this.widget.textAlign,
+                      text: new TextSpan(
+                        children: [
+                          (this.widget.textLeft.isNotEmpty)?
+                          new TextSpan(
+                            text: this.widget.textLeft,
+                            style: new TextStyle(color: Colors.yellow,fontSize: 20.0),
+                          ): TextSpan(),
+                          TextSpan(text: '    '),
+                          new TextSpan(
+                            text: this.widget.title,
+                            style: new TextStyle(color: Colors.white, fontSize: 16.0),
+                          ),
+                        ],
+                      ),
+                    ),
+                  )
+                ],
+              ),
               color: Colors.black,
               elevation: 10.0,
               textColor: Colors.white,

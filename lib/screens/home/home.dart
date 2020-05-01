@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:millionaire_quiz/components/button_circle.dart';
 import 'package:millionaire_quiz/components/button_quiz.dart';
+import 'package:millionaire_quiz/components/quiz_page.dart';
+import 'package:millionaire_quiz/screens/game_play/game_play.dart';
 
 class HomePage extends StatefulWidget {
 
@@ -19,12 +21,7 @@ class _HomePageState extends State<HomePage> {
           body: Container(
             width: MediaQuery.of(context).size.width,
             height: MediaQuery.of(context).size.height,
-            decoration: BoxDecoration(
-              image: DecorationImage(
-                image: AssetImage("assets/background.jpg"),
-                fit: BoxFit.cover,
-              ),
-            ),
+            decoration: QuizPage.quizDecoration(),
             child: Column(
               children: <Widget>[
                 Padding(padding: EdgeInsets.only(top: 40.0),),
@@ -67,22 +64,29 @@ class _HomePageState extends State<HomePage> {
                     ButtonQuiz(
                       'Play',
                       () {
-
-                        }
+                        Navigator.push(context, MaterialPageRoute(
+                            builder: (_context){
+                              return GamePlay();
+                            }
+                        ));
+                      },
+                      textAlign: TextAlign.center,
                     ),
                     Padding(padding: EdgeInsets.only(bottom: 20.0),),
                     ButtonQuiz(
                       'Score',
                       () {
 
-                        }
+                        },
+                      textAlign: TextAlign.center,
                     ),
                     Padding(padding: EdgeInsets.only(bottom: 20.0),),
                     ButtonQuiz(
                       'About',
                       () {
 
-                        }
+                        },
+                      textAlign: TextAlign.center,
                     ),
                   ],
                 )
