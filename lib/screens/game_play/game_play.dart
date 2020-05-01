@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:millionaire_quiz/components/button_circle.dart';
 import 'package:millionaire_quiz/components/button_quiz.dart';
+import 'package:millionaire_quiz/components/countdown_timer.dart';
 import 'package:millionaire_quiz/components/quiz_page.dart';
 
 class GamePlay extends StatefulWidget {
@@ -58,7 +59,13 @@ class _GamePlayState extends State<GamePlay> {
                 )
               ],
             ),
-            Padding(padding: EdgeInsets.only(bottom: 150.0),),
+            Padding(padding: EdgeInsets.only(bottom: 40.0),),
+            Container(
+              height: MediaQuery.of(context).size.width / 5,
+              width: MediaQuery.of(context).size.width / 5,
+              child: CountDownTimer(),
+            ),
+            Padding(padding: EdgeInsets.only(bottom: 40.0),),
             Container(
               child: Text(
                 'Quel est la ville la mieux organisee du centre de l Afrique de l ouest?',
