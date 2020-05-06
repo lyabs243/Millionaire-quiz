@@ -27,7 +27,6 @@ class _CountDownTimerState extends State<CountDownTimer> with TickerProviderStat
         from: controller.value == 0.0
             ? 1.0
             : controller.value).then((value) {
-              print('c fait!!!');
     });
     return AnimatedBuilder(
       animation: controller,

@@ -3,6 +3,8 @@ import 'package:millionaire_quiz/components/button_circle.dart';
 import 'package:millionaire_quiz/components/button_quiz.dart';
 import 'package:millionaire_quiz/components/countdown_timer.dart';
 import 'package:millionaire_quiz/components/quiz_page.dart';
+import 'package:millionaire_quiz/models/answer.dart';
+import 'package:millionaire_quiz/models/question.dart';
 
 class GamePlay extends StatefulWidget {
 
@@ -15,13 +17,86 @@ class GamePlay extends StatefulWidget {
 
 class _GamePlayState extends State<GamePlay> {
 
+  List<Question> questions = [];
+  BuildContext _context;
+  int level = 0;
+  int current_question_index = 0;
+  Question current_question;
+
+  List<Widget> answers_widgets = [];
+
+  bool is_loading = true;
+
+  @override
+  void setState(fn) {
+    if(mounted){
+      super.setState(fn);
+    }
+  }
+
+  @override
+  void initState() {
+    super.initState();
+    initData();
+  }
+
+  initData() async {
+    await Future.delayed(Duration.zero);
+    _context = context;
+    initQuestions();
+  }
+
+  initQuestions() {
+    current_question_index = 0;
+    setState(() {
+      is_loading = true;
+    });
+    Question.getQuestions(_context, level).then((value) {
+      questions = value;
+      setState(() {
+        is_loading = false;
+      });
+      if(questions.length > 0) {
+        setState(() {
+          current_question = questions[current_question_index++];
+          answers_widgets = getAnswersWidgets(current_question.answers);
+        });
+      }
+    });
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       body: Container(
         decoration: QuizPage.quizDecoration(),
         padding: EdgeInsets.only(left: 8.0, right: 8.0),
-        child: Column(
+        child: (is_loading)?
+        Center(
+          child: Container(
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.center,
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: <Widget>[
+                CircularProgressIndicator(
+                  backgroundColor: Colors.white,
+                ),
+                Padding(padding: EdgeInsets.only(bottom: 10.0),),
+                Container(
+                  child: Text(
+                    'Please wait...',
+                    textScaleFactor: 2.0,
+                    style: TextStyle(
+                        color: Colors.white
+                    ),
+                  ),
+                )
+              ],
+            ),
+          ),
+        ):
+        ((questions.length > 0)?
+        Column(
           children: <Widget>[
             Padding(padding: EdgeInsets.only(top: 40.0),),
             Row(
@@ -68,7 +143,7 @@ class _GamePlayState extends State<GamePlay> {
             Padding(padding: EdgeInsets.only(bottom: 40.0),),
             Container(
               child: Text(
-                'Quel est la ville la mieux organisee du centre de l Afrique de l ouest?',
+                current_question.description,
                 textScaleFactor: 2.0,
                 textAlign: TextAlign.center,
                 style: TextStyle(
@@ -79,42 +154,95 @@ class _GamePlayState extends State<GamePlay> {
             Padding(padding: EdgeInsets.only(bottom: 50.0),),
             Column(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
-              children: <Widget>[
-                ButtonQuiz(
-                  'Kinshasa',
-                  () {
-                    },
-                  textLeft: 'A:',
-                ),
-                Padding(padding: EdgeInsets.only(bottom: 20.0),),
-                ButtonQuiz(
-                  'Lagos',
-                  () {
-                    },
-                  textLeft: 'B:',
-                ),
-                Padding(padding: EdgeInsets.only(bottom: 20.0),),
-                ButtonQuiz(
-                  'Accra',
-                  () {
-
-                    },
-                  textLeft: 'C:',
-                ),
-                Padding(padding: EdgeInsets.only(bottom: 20.0),),
-                ButtonQuiz(
-                  'Lubumbashi NB: je sais que c est pa une capitale c juste pour les testes',
-                  () {
-
-                    },
-                  textLeft: 'D:',
-                ),
-              ],
+              children: answers_widgets,
             )
           ],
-        ),
+        ):
+        Center(
+          child: Container(
+            child: Column(
+              children: <Widget>[
+                Padding(padding: EdgeInsets.only(bottom: 40.0),),
+                Container(
+                  width: MediaQuery.of(context).size.width / 2,
+                  height: MediaQuery.of(context).size.width / 2,
+                  child: Image.asset(
+                      'assets/logo.png'
+                  ),
+                ),
+                Padding(padding: EdgeInsets.only(bottom: MediaQuery.of(context).size.height / 6),),
+                Container(
+                  child: Text(
+                    'Failed to load questions, please check your internet connection ans try again',
+                    textScaleFactor: 1.8,
+                    textAlign: TextAlign.center,
+                    style: TextStyle(
+                      color: Colors.white
+                    ),
+                  ),
+                ),
+                Padding(padding: EdgeInsets.only(bottom: 10.0),),
+                ButtonQuiz(
+                  'Try again',
+                   () {
+                    setState(() {
+                      is_loading = true;
+                    });
+                     initQuestions();
+                  },
+                  textAlign: TextAlign.center,
+                )
+              ],
+            ),
+          ),
+        )),
       ),
     );
+  }
+
+  List<Widget> getAnswersWidgets(List<Answer> answers) {
+    List<Widget> widgets = [];
+
+    int index = 1;
+    for(Answer answer in answers) {
+      String left_text = 'A:';
+      if(index == 2) {
+        left_text = 'B:';
+      }
+      if(index == 3) {
+        left_text = 'C:';
+      }
+      if(index == 4) {
+        left_text = 'D:';
+      }
+      index++;
+      widgets.add(
+        ButtonQuiz(
+          answer.description,
+          () {
+            setState(() {
+              //load another question
+              if(current_question_index < questions.length) {
+                current_question = questions[current_question_index++];
+                answers_widgets = getAnswersWidgets(current_question.answers);
+              }
+              else {
+                if(level < 2) {
+                  setState(() {
+                    level += 1;
+                    initQuestions();
+                  });
+                }
+              }
+            });
+          },
+          textLeft: left_text,
+        ),
+      );
+      widgets.add(Padding(padding: EdgeInsets.only(bottom: 20.0),),);
+    }
+
+    return widgets;
   }
 
 }
