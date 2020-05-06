@@ -34,6 +34,7 @@ class _ButtonQuizState extends State<ButtonQuiz>{
           ),
           Container(
             width: MediaQuery.of(context).size.width * 75 / 100,
+            height: 50.0,
             child: new RaisedButton(
               onPressed: this.widget.buttonAction,
               highlightColor: Colors.orange,
@@ -53,7 +54,7 @@ class _ButtonQuizState extends State<ButtonQuiz>{
                           TextSpan(text: '    '),
                           new TextSpan(
                             text: this.widget.title,
-                            style: new TextStyle(color: Colors.white, fontSize: 16.0),
+                            style: new TextStyle(color: Colors.white, fontSize: 18.0),
                           ),
                         ],
                       ),
