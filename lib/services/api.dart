@@ -29,7 +29,7 @@ class Api {
       }
     }
     catch(e){
-      //print(e);
+      print(e);
     }
 
     return mapResult;
