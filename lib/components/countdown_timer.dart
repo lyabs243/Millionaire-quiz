@@ -3,8 +3,12 @@ import 'dart:math' as math;
 
 class CountDownTimer extends StatefulWidget {
 
+  AnimationController controller;
+
+  CountDownTimer(this.controller);
+
   @override
-  _CountDownTimerState createState() => _CountDownTimerState();
+  _CountDownTimerState createState() => _CountDownTimerState(this.controller);
 
 }
 
@@ -12,22 +16,16 @@ class _CountDownTimerState extends State<CountDownTimer> with TickerProviderStat
 
   AnimationController controller;
 
+  _CountDownTimerState(this.controller);
+
   @override
   void initState() {
     super.initState();
-    controller = AnimationController(
-      vsync: this,
-      duration: Duration(seconds: 30),
-    );
   }
 
   @override
   Widget build(BuildContext context) {
-    controller.reverse(
-        from: controller.value == 0.0
-            ? 1.0
-            : controller.value).then((value) {
-    });
+
     return AnimatedBuilder(
       animation: controller,
       builder:

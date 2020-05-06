@@ -15,13 +15,15 @@ class GamePlay extends StatefulWidget {
 
 }
 
-class _GamePlayState extends State<GamePlay> {
+class _GamePlayState extends State<GamePlay>  with TickerProviderStateMixin {
 
   List<Question> questions = [];
   BuildContext _context;
   int level = 0;
   int current_question_index = 0;
   Question current_question;
+
+  AnimationController controller;
 
   List<Widget> answers_widgets = [];
 
@@ -37,6 +39,10 @@ class _GamePlayState extends State<GamePlay> {
   @override
   void initState() {
     super.initState();
+    controller = AnimationController(
+      vsync: this,
+      duration: Duration(seconds: 30),
+    );
     initData();
   }
 
@@ -61,6 +67,8 @@ class _GamePlayState extends State<GamePlay> {
           current_question = questions[current_question_index++];
           answers_widgets = getAnswersWidgets(current_question.answers);
         });
+        controller.reverse(
+            from: 30.0);
       }
     });
   }
@@ -138,7 +146,7 @@ class _GamePlayState extends State<GamePlay> {
             Container(
               height: MediaQuery.of(context).size.width / 5,
               width: MediaQuery.of(context).size.width / 5,
-              child: CountDownTimer(),
+              child: CountDownTimer(this.controller),
             ),
             Padding(padding: EdgeInsets.only(bottom: 40.0),),
             Container(
@@ -225,6 +233,9 @@ class _GamePlayState extends State<GamePlay> {
               if(current_question_index < questions.length) {
                 current_question = questions[current_question_index++];
                 answers_widgets = getAnswersWidgets(current_question.answers);
+                controller.stop();
+                controller.reverse(
+                    from: 30);
               }
               else {
                 if(level < 2) {
