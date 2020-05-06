@@ -12,7 +12,7 @@ class Answer {
     int id = int.parse(item['id']);
     String description = item['description'];
     int id_question = int.parse(item['id_question']);
-    bool is_valid_answer = int.parse(item['id_question']) == 1;
+    bool is_valid_answer = int.parse(item['is_valid_answer']) == 1;
 
     Answer answer = Answer(id, id_question, description, is_valid_answer);
 
