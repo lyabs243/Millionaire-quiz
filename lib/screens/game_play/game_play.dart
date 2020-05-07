@@ -5,6 +5,7 @@ import 'package:millionaire_quiz/components/countdown_timer.dart';
 import 'package:millionaire_quiz/components/quiz_page.dart';
 import 'package:millionaire_quiz/models/answer.dart';
 import 'package:millionaire_quiz/models/question.dart';
+import 'components/dialog_game_finished.dart';
 
 class GamePlay extends StatefulWidget {
 
@@ -22,12 +23,13 @@ class _GamePlayState extends State<GamePlay>  with TickerProviderStateMixin {
   int level = 0;
   int current_question_index = 0;
   Question current_question;
+  int timeToWaitAfterAnswer = 1, selectedAnswerIndex = -1;
+  bool checkingAnswerFinished = false, doFlash = false;
 
   AnimationController controller;
 
-  List<Widget> answers_widgets = [];
-
-  bool is_loading = true;
+  bool is_loading = true, isAnswerAClicked = false, isAnswerBClicked = false, isAnswerCClicked = false,
+      isAnswerDClicked = false;
 
   @override
   void setState(fn) {
@@ -43,6 +45,15 @@ class _GamePlayState extends State<GamePlay>  with TickerProviderStateMixin {
       vsync: this,
       duration: Duration(seconds: 30),
     );
+    controller.addStatusListener((status) {
+      if(status == AnimationStatus.dismissed) {
+        finishGame();
+      }
+    });
+    play();
+  }
+
+  play() {
     initData();
   }
 
@@ -56,6 +67,8 @@ class _GamePlayState extends State<GamePlay>  with TickerProviderStateMixin {
     current_question_index = 0;
     setState(() {
       is_loading = true;
+      checkingAnswerFinished = false;
+      selectedAnswerIndex = -1;
     });
     Question.getQuestions(_context, level).then((value) {
       questions = value;
@@ -65,7 +78,6 @@ class _GamePlayState extends State<GamePlay>  with TickerProviderStateMixin {
       if(questions.length > 0) {
         setState(() {
           current_question = questions[current_question_index++];
-          answers_widgets = getAnswersWidgets(current_question.answers);
         });
         controller.reverse(
             from: 30.0);
@@ -162,7 +174,59 @@ class _GamePlayState extends State<GamePlay>  with TickerProviderStateMixin {
             Padding(padding: EdgeInsets.only(bottom: 50.0),),
             Column(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
-              children: answers_widgets,
+              children: [
+                ButtonQuiz(
+                  current_question.answers[0].description,
+                      () async {
+                    setState(() {
+                      isAnswerAClicked = true;
+                      selectedAnswerIndex = 0;
+                    });
+                    checkAnswer(0);
+                  },
+                  textLeft: 'A:',
+                  buttonColor: getAnswerButtonColor(0),
+                ),
+                Padding(padding: EdgeInsets.only(bottom: 20.0),),
+                ButtonQuiz(
+                  current_question.answers[1].description,
+                      () async {
+                    setState(() {
+                      isAnswerBClicked = true;
+                      selectedAnswerIndex = 1;
+                    });
+                    checkAnswer(1);
+                  },
+                  textLeft: 'B:',
+                  buttonColor: getAnswerButtonColor(1),
+                ),
+                Padding(padding: EdgeInsets.only(bottom: 20.0),),
+                ButtonQuiz(
+                  current_question.answers[2].description,
+                      () async{
+                    setState(() {
+                      isAnswerCClicked = true;
+                      selectedAnswerIndex = 2;
+                    });
+                    checkAnswer(2);
+                  },
+                  textLeft: 'C:',
+                  buttonColor: getAnswerButtonColor(2),
+                ),
+                Padding(padding: EdgeInsets.only(bottom: 20.0),),
+                ButtonQuiz(
+                  current_question.answers[3].description,
+                      () async {
+                    setState(() {
+                      isAnswerDClicked = true;
+                      selectedAnswerIndex = 3;
+                    });
+                    checkAnswer(3);
+                  },
+                  textLeft: 'D:',
+                  buttonColor: getAnswerButtonColor(3),
+                )
+              ],
             )
           ],
         ):
@@ -208,52 +272,115 @@ class _GamePlayState extends State<GamePlay>  with TickerProviderStateMixin {
     );
   }
 
-  List<Widget> getAnswersWidgets(List<Answer> answers) {
-    List<Widget> widgets = [];
+  checkAnswer(int index) async {
+    controller.stop();
+    await new Future.delayed(Duration(seconds : timeToWaitAfterAnswer));
+    /*setState(() {
+      checkingAnswerFinished = true;
+    });*/
+    setState(() {
+      if(index == 0) {
+        isAnswerAClicked = false;
+      }
+      else if(index == 1) {
+        isAnswerBClicked = false;
+      }
+      else if(index == 2) {
+        isAnswerCClicked = false;
+      }
+      else if(index == 3) {
+        isAnswerDClicked = false;
+      }
+    });
+    checkingAnswerFinished = true;
+    flashLight().then((value) {
+      //await new Future.delayed(Duration(seconds : timeToWaitAfterAnswer));
 
-    int index = 1;
-    for(Answer answer in answers) {
-      String left_text = 'A:';
-      if(index == 2) {
-        left_text = 'B:';
-      }
-      if(index == 3) {
-        left_text = 'C:';
-      }
-      if(index == 4) {
-        left_text = 'D:';
-      }
-      index++;
-      widgets.add(
-        ButtonQuiz(
-          answer.description,
-          () {
-            setState(() {
-              //load another question
-              if(current_question_index < questions.length) {
-                current_question = questions[current_question_index++];
-                answers_widgets = getAnswersWidgets(current_question.answers);
-                controller.stop();
-                controller.reverse(
-                    from: 30);
-              }
-              else {
-                if(level < 2) {
-                  setState(() {
-                    level += 1;
-                    initQuestions();
-                  });
-                }
-              }
-            });
-          },
-          textLeft: left_text,
-        ),
-      );
-      widgets.add(Padding(padding: EdgeInsets.only(bottom: 20.0),),);
+      onAnswerClicked(current_question.answers[index]);
+    });
+  }
+
+  Future flashLight() async {
+    for (int i = 0; i < 5; i++) {
+      await new Future.delayed(Duration(milliseconds: 500));
+      setState(() {
+        doFlash = !doFlash;
+      });
     }
+    doFlash = false;
+  }
 
-    return widgets;
+  onAnswerClicked(Answer answer) async {
+    setState(() {
+      checkingAnswerFinished = false;
+      selectedAnswerIndex = -1;
+      //load another question
+      if(answer.is_valid_answer && controller.value > 0) {
+        if(current_question_index < questions.length) {
+          current_question = questions[current_question_index++];
+          controller.stop();
+          controller.reverse(from: 30);
+        }
+        else {
+          if(level < 2) {
+            setState(() {
+              level += 1;
+              initQuestions();
+            });
+          }
+        }
+      }
+      else {
+        finishGame();
+      }
+    });
+  }
+
+  finishGame() {
+    showDialog(
+      context: context,
+      barrierDismissible: false,
+      builder: (BuildContext context) => DialogGameFinished(500),
+    ).then((value) {
+      if(value) {
+        play();
+      }
+      else {
+        Navigator.pop(context);
+      }
+    });
+  }
+
+  Color getAnswerButtonColor(int index) {
+    Color color;
+    if (checkingAnswerFinished) {
+      if (current_question.answers[index].is_valid_answer) {
+        if (doFlash) {
+          color = Colors.black;
+        }
+        else {
+          color = Colors.green;
+        }
+      }
+      else {
+        if (index == selectedAnswerIndex) {
+          color = Colors.red;
+        }
+        else {
+          color = Colors.black;
+        }
+      }
+    }
+    else {
+      if ((isAnswerDClicked && index == 3) || (isAnswerCClicked && index == 2) || (isAnswerBClicked && index == 1)
+       || (isAnswerAClicked && index == 0)) {
+        color = Colors.orange;
+      }
+      else {
+        color = Colors.black;
+      }
+    }
+    return color;
   }
 
 }
