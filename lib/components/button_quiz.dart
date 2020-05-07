@@ -1,28 +1,18 @@
 import 'package:flutter/material.dart';
 
-class ButtonQuiz extends StatefulWidget{
+class ButtonQuiz extends StatelessWidget{
 
   String title;
   String textLeft;
   TextAlign textAlign;
   Function buttonAction;
+  Color buttonColor;
 
-  ButtonQuiz(this.title, this.buttonAction, {this.textAlign: TextAlign.left, this.textLeft: ''});
-
-  @override
-  _ButtonQuizState createState() {
-    return new _ButtonQuizState();
-  }
-
-}
-
-class _ButtonQuizState extends State<ButtonQuiz>{
-
-  BuildContext context;
+  ButtonQuiz(this.title, this.buttonAction, {this.textAlign: TextAlign.left, this.textLeft: '',
+    this.buttonColor: Colors.black});
 
   @override
   Widget build(BuildContext context) {
-    this.context = context;
     return Container(
       child: Row(
         mainAxisAlignment: MainAxisAlignment.center,
@@ -36,24 +26,26 @@ class _ButtonQuizState extends State<ButtonQuiz>{
             width: MediaQuery.of(context).size.width * 75 / 100,
             height: 50.0,
             child: new RaisedButton(
-              onPressed: this.widget.buttonAction,
+              onPressed: () {
+                this.buttonAction();
+              },
               highlightColor: Colors.orange,
               child: Row(
                 children: <Widget>[
                   SizedBox(
                     width: MediaQuery.of(context).size.width * 68 / 100,
                     child: RichText(
-                      textAlign: this.widget.textAlign,
+                      textAlign: this.textAlign,
                       text: new TextSpan(
                         children: [
-                          (this.widget.textLeft.isNotEmpty)?
+                          (this.textLeft.isNotEmpty)?
                           new TextSpan(
-                            text: this.widget.textLeft,
+                            text: this.textLeft,
                             style: new TextStyle(color: Colors.yellow,fontSize: 20.0),
                           ): TextSpan(),
                           TextSpan(text: '    '),
                           new TextSpan(
-                            text: this.widget.title,
+                            text: this.title,
                             style: new TextStyle(color: Colors.white, fontSize: 18.0),
                           ),
                         ],
@@ -62,12 +54,12 @@ class _ButtonQuizState extends State<ButtonQuiz>{
                   )
                 ],
               ),
-              color: Colors.black,
+              color: this.buttonColor,
               elevation: 10.0,
               textColor: Colors.white,
               shape: RoundedRectangleBorder(
-                borderRadius: new BorderRadius.circular(30.0),
-                side: BorderSide(color: Theme.of(context).primaryColor, width: 2.0)
+                  borderRadius: new BorderRadius.circular(30.0),
+                  side: BorderSide(color: Theme.of(context).primaryColor, width: 2.0)
               ),
             ),
           ),
