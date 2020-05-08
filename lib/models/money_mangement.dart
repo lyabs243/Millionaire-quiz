@@ -24,7 +24,10 @@ class MoneyManagement {
    * money earning by player
    */
   int playerFail(int level) {
-    return levelsMinimumMoney[level];
+    if(currentStep > 0) {
+      return levelsMinimumMoney[level];
+    }
+    return 0;
   }
 
   /**
