@@ -54,6 +54,7 @@ class _GamePlayState extends State<GamePlay>  with TickerProviderStateMixin {
   }
 
   play() {
+    level = 0;
     initData();
   }
 
