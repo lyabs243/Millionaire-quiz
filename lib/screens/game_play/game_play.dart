@@ -335,9 +335,9 @@ class _GamePlayState extends State<GamePlay>  with TickerProviderStateMixin {
       selectedAnswerIndex = -1;
       //load another question
       if(answer.is_valid_answer && controller.value > 0) {
+        currentMoney = moneyManagement.stepUp();
         if(current_question_index < questions.length) {
           current_question = questions[current_question_index++];
-          currentMoney = moneyManagement.stepUp();
           controller.stop();
           controller.reverse(from: 30);
         }
@@ -348,20 +348,24 @@ class _GamePlayState extends State<GamePlay>  with TickerProviderStateMixin {
               initQuestions();
             });
           }
+          else {
+            //jackpot player becomes millionaire
+            finishGame(jackpot: true);
+          }
         }
       }
       else {
-        currentMoney = moneyManagement.playerFail(level);
-        finishGame();
+        //currentMoney = moneyManagement.playerFail(level);
+        //finishGame();
       }
     });
   }
 
-  finishGame() {
+  finishGame({jackpot: false}) {
     showDialog(
       context: context,
       barrierDismissible: false,
-      builder: (BuildContext context) => DialogGameFinished(currentMoney),
+      builder: (BuildContext context) => DialogGameFinished(currentMoney, jackpot: jackpot,),
     ).then((value) {
       if(value) {
         play();

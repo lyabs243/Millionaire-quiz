@@ -4,8 +4,9 @@ import '../../../models/money_mangement.dart';
 class DialogGameFinished extends StatelessWidget {
 
   int earningValue = 0;
+  bool jackpot;
 
-  DialogGameFinished(this.earningValue);
+  DialogGameFinished(this.earningValue, {this.jackpot: false});
 
   @override
   Widget build(BuildContext context) {
@@ -47,7 +48,8 @@ class DialogGameFinished extends StatelessWidget {
             mainAxisSize: MainAxisSize.min, // To make the card compact
             children: <Widget>[
               Text(
-                'Game Over',
+                (jackpot)? 'Jackpot'
+                : 'Game Over',
                 style: TextStyle(
                   fontSize: 24.0,
                   fontWeight: FontWeight.w700,
@@ -63,7 +65,8 @@ class DialogGameFinished extends StatelessWidget {
               ),
               SizedBox(height: 16.0),
               Text(
-                'You are not millionaire... Your earn \$ $earningValue !',
+                (jackpot)? 'Congratulation You ara new millionaire! Get your check of \$ $earningValue !'
+                : 'You are not millionaire... Your earn \$ $earningValue !',
                 textAlign: TextAlign.center,
                 textScaleFactor: 1.2,
                 style: TextStyle(
