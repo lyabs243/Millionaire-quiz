@@ -1,8 +1,9 @@
 import 'package:flutter/material.dart';
+import '../../../models/money_mangement.dart';
 
 class DialogGameFinished extends StatelessWidget {
 
-  int earningValue = 50;
+  int earningValue = 0;
 
   DialogGameFinished(this.earningValue);
 
@@ -62,7 +63,7 @@ class DialogGameFinished extends StatelessWidget {
               ),
               SizedBox(height: 16.0),
               Text(
-                'You are not millionaire... Your earn $earningValue \$ !',
+                'You are not millionaire... Your earn \$ $earningValue !',
                 textAlign: TextAlign.center,
                 textScaleFactor: 1.2,
                 style: TextStyle(
@@ -111,7 +112,7 @@ class DialogGameFinished extends StatelessWidget {
             child: CircleAvatar(
               backgroundColor: Theme.of(context).primaryColor,
               child: Text(
-                '$earningValue',
+                '${MoneyManagement.moneyDescriptionReduce(earningValue)}',
                 textScaleFactor: 2.5,
                 style: TextStyle(
                   color: Colors.yellow,

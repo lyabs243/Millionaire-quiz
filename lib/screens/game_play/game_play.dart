@@ -6,6 +6,7 @@ import 'package:millionaire_quiz/components/quiz_page.dart';
 import 'package:millionaire_quiz/models/answer.dart';
 import 'package:millionaire_quiz/models/question.dart';
 import 'components/dialog_game_finished.dart';
+import '../../models/money_mangement.dart';
 
 class GamePlay extends StatefulWidget {
 
@@ -21,10 +22,11 @@ class _GamePlayState extends State<GamePlay>  with TickerProviderStateMixin {
   List<Question> questions = [];
   BuildContext _context;
   int level = 0;
-  int current_question_index = 0;
+  int current_question_index = 0, currentMoney = 0;
   Question current_question;
   int timeToWaitAfterAnswer = 1, selectedAnswerIndex = -1;
   bool checkingAnswerFinished = false, doFlash = false;
+  MoneyManagement moneyManagement;
 
   AnimationController controller;
 
@@ -41,6 +43,7 @@ class _GamePlayState extends State<GamePlay>  with TickerProviderStateMixin {
   @override
   void initState() {
     super.initState();
+    moneyManagement = new MoneyManagement();
     controller = AnimationController(
       vsync: this,
       duration: Duration(seconds: 30),
@@ -55,6 +58,8 @@ class _GamePlayState extends State<GamePlay>  with TickerProviderStateMixin {
 
   play() {
     level = 0;
+    moneyManagement.currentStep = 0;
+    currentMoney = 0;
     initData();
   }
 
@@ -157,13 +162,23 @@ class _GamePlayState extends State<GamePlay>  with TickerProviderStateMixin {
                   )
                 ],
               ),
-              Padding(padding: EdgeInsets.only(bottom: 40.0),),
+              Padding(padding: EdgeInsets.only(bottom: 30.0),),
+              Container(
+                child: Text(
+                  '\$ $currentMoney',
+                  textScaleFactor: 2.0,
+                  style: TextStyle(
+                    color: Colors.yellow
+                  ),
+                ),
+              ),
+              Padding(padding: EdgeInsets.only(bottom: 30.0),),
               Container(
                 height: MediaQuery.of(context).size.width / 5,
                 width: MediaQuery.of(context).size.width / 5,
                 child: CountDownTimer(this.controller),
               ),
-              Padding(padding: EdgeInsets.only(bottom: 40.0),),
+              Padding(padding: EdgeInsets.only(bottom: 30.0),),
               Container(
                 child: Text(
                   current_question.description,
@@ -322,6 +337,7 @@ class _GamePlayState extends State<GamePlay>  with TickerProviderStateMixin {
       if(answer.is_valid_answer && controller.value > 0) {
         if(current_question_index < questions.length) {
           current_question = questions[current_question_index++];
+          currentMoney = moneyManagement.stepUp();
           controller.stop();
           controller.reverse(from: 30);
         }
@@ -335,6 +351,7 @@ class _GamePlayState extends State<GamePlay>  with TickerProviderStateMixin {
         }
       }
       else {
+        currentMoney = moneyManagement.playerFail(level);
         finishGame();
       }
     });
@@ -344,7 +361,7 @@ class _GamePlayState extends State<GamePlay>  with TickerProviderStateMixin {
     showDialog(
       context: context,
       barrierDismissible: false,
-      builder: (BuildContext context) => DialogGameFinished(500),
+      builder: (BuildContext context) => DialogGameFinished(currentMoney),
     ).then((value) {
       if(value) {
         play();
