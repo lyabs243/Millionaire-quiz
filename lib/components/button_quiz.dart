@@ -30,8 +30,8 @@ class ButtonQuiz extends StatelessWidget{
                 this.buttonAction();
               },
               highlightColor: Colors.orange,
-              child: Row(
-                children: <Widget>[
+              child: //Row(
+                //children: <Widget>[
                   SizedBox(
                     width: MediaQuery.of(context).size.width * 68 / 100,
                     child: RichText(
@@ -51,9 +51,9 @@ class ButtonQuiz extends StatelessWidget{
                         ],
                       ),
                     ),
-                  )
-                ],
-              ),
+                  ),
+                //],
+              //),
               color: this.buttonColor,
               elevation: 10.0,
               textColor: Colors.white,

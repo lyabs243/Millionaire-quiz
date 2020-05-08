@@ -88,186 +88,189 @@ class _GamePlayState extends State<GamePlay>  with TickerProviderStateMixin {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      body: Container(
-        decoration: QuizPage.quizDecoration(),
-        padding: EdgeInsets.only(left: 8.0, right: 8.0),
-        child: (is_loading)?
-        Center(
-          child: Container(
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.center,
-              mainAxisAlignment: MainAxisAlignment.center,
-              children: <Widget>[
-                CircularProgressIndicator(
-                  backgroundColor: Colors.white,
-                ),
-                Padding(padding: EdgeInsets.only(bottom: 10.0),),
-                Container(
-                  child: Text(
-                    'Please wait...',
-                    textScaleFactor: 2.0,
-                    style: TextStyle(
-                        color: Colors.white
-                    ),
+      body: SingleChildScrollView(
+        child: Container(
+          decoration: QuizPage.quizDecoration(),
+          height: MediaQuery.of(context).size.height,
+          padding: EdgeInsets.only(left: 8.0, right: 8.0),
+          child: (is_loading)?
+          Center(
+            child: Container(
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.center,
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: <Widget>[
+                  CircularProgressIndicator(
+                    backgroundColor: Colors.white,
                   ),
-                )
-              ],
-            ),
-          ),
-        ):
-        ((questions.length > 0)?
-        Column(
-          children: <Widget>[
-            Padding(padding: EdgeInsets.only(top: 40.0),),
-            Row(
-              mainAxisAlignment: MainAxisAlignment.end,
-              children: <Widget>[
-                ButtonCircle(
-                    Icon(
-                      Icons.filter_center_focus,
-                      size: 25.0,
-                      color: Colors.white,
+                  Padding(padding: EdgeInsets.only(bottom: 10.0),),
+                  Container(
+                    child: Text(
+                      'Please wait...',
+                      textScaleFactor: 2.0,
+                      style: TextStyle(
+                          color: Colors.white
+                      ),
                     ),
-                        () {
-
-                    }
-                ),
-                ButtonCircle(
-                    Icon(
-                      Icons.call,
-                      size: 25.0,
-                      color: Colors.white,
-                    ),
-                        () {
-
-                    }
-                ),
-                ButtonCircle(
-                    Icon(
-                      Icons.group,
-                      size: 25.0,
-                      color: Colors.white,
-                    ),
-                        () {
-
-                    }
-                )
-              ],
-            ),
-            Padding(padding: EdgeInsets.only(bottom: 40.0),),
-            Container(
-              height: MediaQuery.of(context).size.width / 5,
-              width: MediaQuery.of(context).size.width / 5,
-              child: CountDownTimer(this.controller),
-            ),
-            Padding(padding: EdgeInsets.only(bottom: 40.0),),
-            Container(
-              child: Text(
-                current_question.description,
-                textScaleFactor: 2.0,
-                textAlign: TextAlign.center,
-                style: TextStyle(
-                  color: Colors.white
-                ),
+                  )
+                ],
               ),
             ),
-            Padding(padding: EdgeInsets.only(bottom: 50.0),),
-            Column(
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-              children: [
-                ButtonQuiz(
-                  current_question.answers[0].description,
-                      () async {
-                    setState(() {
-                      isAnswerAClicked = true;
-                      selectedAnswerIndex = 0;
-                    });
-                    checkAnswer(0);
-                  },
-                  textLeft: 'A:',
-                  buttonColor: getAnswerButtonColor(0),
-                ),
-                Padding(padding: EdgeInsets.only(bottom: 20.0),),
-                ButtonQuiz(
-                  current_question.answers[1].description,
-                      () async {
-                    setState(() {
-                      isAnswerBClicked = true;
-                      selectedAnswerIndex = 1;
-                    });
-                    checkAnswer(1);
-                  },
-                  textLeft: 'B:',
-                  buttonColor: getAnswerButtonColor(1),
-                ),
-                Padding(padding: EdgeInsets.only(bottom: 20.0),),
-                ButtonQuiz(
-                  current_question.answers[2].description,
-                      () async{
-                    setState(() {
-                      isAnswerCClicked = true;
-                      selectedAnswerIndex = 2;
-                    });
-                    checkAnswer(2);
-                  },
-                  textLeft: 'C:',
-                  buttonColor: getAnswerButtonColor(2),
-                ),
-                Padding(padding: EdgeInsets.only(bottom: 20.0),),
-                ButtonQuiz(
-                  current_question.answers[3].description,
-                      () async {
-                    setState(() {
-                      isAnswerDClicked = true;
-                      selectedAnswerIndex = 3;
-                    });
-                    checkAnswer(3);
-                  },
-                  textLeft: 'D:',
-                  buttonColor: getAnswerButtonColor(3),
-                )
-              ],
-            )
-          ],
-        ):
-        Center(
-          child: Container(
-            child: Column(
-              children: <Widget>[
-                Padding(padding: EdgeInsets.only(bottom: 40.0),),
-                Container(
-                  width: MediaQuery.of(context).size.width / 2,
-                  height: MediaQuery.of(context).size.width / 2,
-                  child: Image.asset(
-                      'assets/logo.png'
+          ):
+          ((questions.length > 0)?
+          Column(
+            children: <Widget>[
+              Padding(padding: EdgeInsets.only(top: 40.0),),
+              Row(
+                mainAxisAlignment: MainAxisAlignment.end,
+                children: <Widget>[
+                  ButtonCircle(
+                      Icon(
+                        Icons.filter_center_focus,
+                        size: 25.0,
+                        color: Colors.white,
+                      ),
+                          () {
+
+                      }
+                  ),
+                  ButtonCircle(
+                      Icon(
+                        Icons.call,
+                        size: 25.0,
+                        color: Colors.white,
+                      ),
+                          () {
+
+                      }
+                  ),
+                  ButtonCircle(
+                      Icon(
+                        Icons.group,
+                        size: 25.0,
+                        color: Colors.white,
+                      ),
+                          () {
+
+                      }
+                  )
+                ],
+              ),
+              Padding(padding: EdgeInsets.only(bottom: 40.0),),
+              Container(
+                height: MediaQuery.of(context).size.width / 5,
+                width: MediaQuery.of(context).size.width / 5,
+                child: CountDownTimer(this.controller),
+              ),
+              Padding(padding: EdgeInsets.only(bottom: 40.0),),
+              Container(
+                child: Text(
+                  current_question.description,
+                  textScaleFactor: 2.0,
+                  textAlign: TextAlign.center,
+                  style: TextStyle(
+                      color: Colors.white
                   ),
                 ),
-                Padding(padding: EdgeInsets.only(bottom: MediaQuery.of(context).size.height / 6),),
-                Container(
-                  child: Text(
-                    'Failed to load questions, please check your internet connection ans try again',
-                    textScaleFactor: 1.8,
-                    textAlign: TextAlign.center,
-                    style: TextStyle(
-                      color: Colors.white
+              ),
+              Padding(padding: EdgeInsets.only(bottom: 50.0),),
+              Column(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                children: [
+                  ButtonQuiz(
+                    current_question.answers[0].description,
+                        () async {
+                      setState(() {
+                        isAnswerAClicked = true;
+                        selectedAnswerIndex = 0;
+                      });
+                      checkAnswer(0);
+                    },
+                    textLeft: 'A:',
+                    buttonColor: getAnswerButtonColor(0),
+                  ),
+                  Padding(padding: EdgeInsets.only(bottom: 20.0),),
+                  ButtonQuiz(
+                    current_question.answers[1].description,
+                        () async {
+                      setState(() {
+                        isAnswerBClicked = true;
+                        selectedAnswerIndex = 1;
+                      });
+                      checkAnswer(1);
+                    },
+                    textLeft: 'B:',
+                    buttonColor: getAnswerButtonColor(1),
+                  ),
+                  Padding(padding: EdgeInsets.only(bottom: 20.0),),
+                  ButtonQuiz(
+                    current_question.answers[2].description,
+                        () async{
+                      setState(() {
+                        isAnswerCClicked = true;
+                        selectedAnswerIndex = 2;
+                      });
+                      checkAnswer(2);
+                    },
+                    textLeft: 'C:',
+                    buttonColor: getAnswerButtonColor(2),
+                  ),
+                  Padding(padding: EdgeInsets.only(bottom: 20.0),),
+                  ButtonQuiz(
+                    current_question.answers[3].description,
+                        () async {
+                      setState(() {
+                        isAnswerDClicked = true;
+                        selectedAnswerIndex = 3;
+                      });
+                      checkAnswer(3);
+                    },
+                    textLeft: 'D:',
+                    buttonColor: getAnswerButtonColor(3),
+                  )
+                ],
+              )
+            ],
+          ):
+          Center(
+            child: Container(
+              child: Column(
+                children: <Widget>[
+                  Padding(padding: EdgeInsets.only(bottom: 40.0),),
+                  Container(
+                    width: MediaQuery.of(context).size.width / 2,
+                    height: MediaQuery.of(context).size.width / 2,
+                    child: Image.asset(
+                        'assets/logo.png'
                     ),
                   ),
-                ),
-                Padding(padding: EdgeInsets.only(bottom: 10.0),),
-                ButtonQuiz(
-                  'Try again',
-                   () {
-                    setState(() {
-                      is_loading = true;
-                    });
-                     initQuestions();
-                  },
-                  textAlign: TextAlign.center,
-                )
-              ],
+                  Padding(padding: EdgeInsets.only(bottom: MediaQuery.of(context).size.height / 6),),
+                  Container(
+                    child: Text(
+                      'Failed to load questions, please check your internet connection ans try again',
+                      textScaleFactor: 1.8,
+                      textAlign: TextAlign.center,
+                      style: TextStyle(
+                          color: Colors.white
+                      ),
+                    ),
+                  ),
+                  Padding(padding: EdgeInsets.only(bottom: 10.0),),
+                  ButtonQuiz(
+                    'Try again',
+                        () {
+                      setState(() {
+                        is_loading = true;
+                      });
+                      initQuestions();
+                    },
+                    textAlign: TextAlign.center,
+                  )
+                ],
+              ),
             ),
-          ),
-        )),
+          )),
+        ),
       ),
     );
   }

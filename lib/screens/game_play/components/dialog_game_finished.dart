@@ -55,7 +55,7 @@ class DialogGameFinished extends StatelessWidget {
               ),
               SizedBox(height: 16.0),
               Container(
-                height: 150.0,
+                height: MediaQuery.of(context).size.height / 8,
                 child: Image.asset(
                   'assets/ic_dol.png'
                 ),
