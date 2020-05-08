@@ -355,8 +355,8 @@ class _GamePlayState extends State<GamePlay>  with TickerProviderStateMixin {
         }
       }
       else {
-        //currentMoney = moneyManagement.playerFail(level);
-        //finishGame();
+        currentMoney = moneyManagement.playerFail(level);
+        finishGame();
       }
     });
   }
