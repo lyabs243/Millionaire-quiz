@@ -129,137 +129,139 @@ class _GamePlayState extends State<GamePlay>  with TickerProviderStateMixin {
             ),
           ):
           ((questions.length > 0)?
-          Column(
-            children: <Widget>[
-              Padding(padding: EdgeInsets.only(top: 40.0),),
-              Row(
-                mainAxisAlignment: MainAxisAlignment.end,
-                children: <Widget>[
-                  ButtonCircle(
-                      Icon(
-                        Icons.filter_center_focus,
-                        size: 25.0,
-                        color: Colors.white,
-                      ),
-                          () {
+          SingleChildScrollView(
+            child: Column(
+              children: <Widget>[
+                Padding(padding: EdgeInsets.only(top: 40.0),),
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.end,
+                  children: <Widget>[
+                    ButtonCircle(
+                        Icon(
+                          Icons.filter_center_focus,
+                          size: (25.0 / 853) * MediaQuery.of(context).size.height,
+                          color: Colors.white,
+                        ),
+                            () {
 
-                      }
-                  ),
-                  ButtonCircle(
-                      Icon(
-                        Icons.call,
-                        size: 25.0,
-                        color: Colors.white,
-                      ),
-                          () {
+                        }
+                    ),
+                    ButtonCircle(
+                        Icon(
+                          Icons.call,
+                          size: (25.0 / 853) * MediaQuery.of(context).size.height,
+                          color: Colors.white,
+                        ),
+                            () {
 
-                      }
-                  ),
-                  ButtonCircle(
-                      Icon(
-                        Icons.group,
-                        size: 25.0,
-                        color: Colors.white,
-                      ),
-                          () {
+                        }
+                    ),
+                    ButtonCircle(
+                        Icon(
+                          Icons.group,
+                          size: (25.0 / 853) * MediaQuery.of(context).size.height,
+                          color: Colors.white,
+                        ),
+                            () {
 
-                      }
-                  )
-                ],
-              ),
-              Padding(padding: EdgeInsets.only(bottom: 30.0),),
-              Container(
-                child: Text(
-                  '\$ $currentMoney',
-                  textScaleFactor: 2.0,
-                  style: TextStyle(
-                    color: Colors.yellow
+                        }
+                    )
+                  ],
+                ),
+                Padding(padding: EdgeInsets.only(bottom: (30.0 / 853) * MediaQuery.of(context).size.height),),
+                Container(
+                  child: Text(
+                    '\$ $currentMoney',
+                    textScaleFactor: 2.0,
+                    style: TextStyle(
+                        color: Colors.yellow
+                    ),
                   ),
                 ),
-              ),
-              Padding(padding: EdgeInsets.only(bottom: 30.0),),
-              Container(
-                height: MediaQuery.of(context).size.width / 5,
-                width: MediaQuery.of(context).size.width / 5,
-                child: CountDownTimer(this.controller),
-              ),
-              Padding(padding: EdgeInsets.only(bottom: 30.0),),
-              Container(
-                child: Text(
-                  current_question.description,
-                  textScaleFactor: 2.0,
-                  textAlign: TextAlign.center,
-                  style: TextStyle(
-                      color: Colors.white
+                Padding(padding: EdgeInsets.only(bottom: (30.0 / 853) * MediaQuery.of(context).size.height),),
+                Container(
+                  height: MediaQuery.of(context).size.width / 5,
+                  width: MediaQuery.of(context).size.width / 5,
+                  child: CountDownTimer(this.controller),
+                ),
+                Padding(padding: EdgeInsets.only(bottom: (30.0 / 853) * MediaQuery.of(context).size.height),),
+                Container(
+                  child: Text(
+                    current_question.description,
+                    textScaleFactor: 1.8,
+                    textAlign: TextAlign.center,
+                    style: TextStyle(
+                        color: Colors.white
+                    ),
                   ),
                 ),
-              ),
-              Padding(padding: EdgeInsets.only(bottom: 50.0),),
-              Column(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                children: [
-                  ButtonQuiz(
-                    current_question.answers[0].description,
-                        () async {
-                      if(!checkingAnswerFinished) {
-                        setState(() {
-                          isAnswerAClicked = true;
-                          selectedAnswerIndex = 0;
-                        });
-                        checkAnswer(0);
-                      }
-                    },
-                    textLeft: 'A:',
-                    buttonColor: getAnswerButtonColor(0),
-                  ),
-                  Padding(padding: EdgeInsets.only(bottom: 20.0),),
-                  ButtonQuiz(
-                    current_question.answers[1].description,
-                        () async {
-                      if(!checkingAnswerFinished) {
-                        setState(() {
-                          isAnswerBClicked = true;
-                          selectedAnswerIndex = 1;
-                        });
-                        checkAnswer(1);
-                      }
-                    },
-                    textLeft: 'B:',
-                    buttonColor: getAnswerButtonColor(1),
-                  ),
-                  Padding(padding: EdgeInsets.only(bottom: 20.0),),
-                  ButtonQuiz(
-                    current_question.answers[2].description,
-                        () async{
-                      if(!checkingAnswerFinished) {
-                        setState(() {
-                          isAnswerCClicked = true;
-                          selectedAnswerIndex = 2;
-                        });
-                        checkAnswer(2);
-                      }
-                    },
-                    textLeft: 'C:',
-                    buttonColor: getAnswerButtonColor(2),
-                  ),
-                  Padding(padding: EdgeInsets.only(bottom: 20.0),),
-                  ButtonQuiz(
-                    current_question.answers[3].description,
-                        () async {
-                      if(!checkingAnswerFinished) {
-                        setState(() {
-                          isAnswerDClicked = true;
-                          selectedAnswerIndex = 3;
-                        });
-                        checkAnswer(3);
-                      }
-                    },
-                    textLeft: 'D:',
-                    buttonColor: getAnswerButtonColor(3),
-                  )
-                ],
-              )
-            ],
+                Padding(padding: EdgeInsets.only(bottom: (50.0 / 853) * MediaQuery.of(context).size.height),),
+                Column(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  children: [
+                    ButtonQuiz(
+                      current_question.answers[0].description,
+                          () async {
+                        if(!checkingAnswerFinished) {
+                          setState(() {
+                            isAnswerAClicked = true;
+                            selectedAnswerIndex = 0;
+                          });
+                          checkAnswer(0);
+                        }
+                      },
+                      textLeft: 'A:',
+                      buttonColor: getAnswerButtonColor(0),
+                    ),
+                    Padding(padding: EdgeInsets.only(bottom: (20.0 / 853) * MediaQuery.of(context).size.height),),
+                    ButtonQuiz(
+                      current_question.answers[1].description,
+                          () async {
+                        if(!checkingAnswerFinished) {
+                          setState(() {
+                            isAnswerBClicked = true;
+                            selectedAnswerIndex = 1;
+                          });
+                          checkAnswer(1);
+                        }
+                      },
+                      textLeft: 'B:',
+                      buttonColor: getAnswerButtonColor(1),
+                    ),
+                    Padding(padding: EdgeInsets.only(bottom: 20.0),),
+                    ButtonQuiz(
+                      current_question.answers[2].description,
+                          () async{
+                        if(!checkingAnswerFinished) {
+                          setState(() {
+                            isAnswerCClicked = true;
+                            selectedAnswerIndex = 2;
+                          });
+                          checkAnswer(2);
+                        }
+                      },
+                      textLeft: 'C:',
+                      buttonColor: getAnswerButtonColor(2),
+                    ),
+                    Padding(padding: EdgeInsets.only(bottom: 20.0),),
+                    ButtonQuiz(
+                      current_question.answers[3].description,
+                          () async {
+                        if(!checkingAnswerFinished) {
+                          setState(() {
+                            isAnswerDClicked = true;
+                            selectedAnswerIndex = 3;
+                          });
+                          checkAnswer(3);
+                        }
+                      },
+                      textLeft: 'D:',
+                      buttonColor: getAnswerButtonColor(3),
+                    )
+                  ],
+                )
+              ],
+            ),
           ):
           Center(
             child: Container(

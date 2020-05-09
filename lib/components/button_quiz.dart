@@ -41,12 +41,12 @@ class ButtonQuiz extends StatelessWidget{
                           (this.textLeft.isNotEmpty)?
                           new TextSpan(
                             text: this.textLeft,
-                            style: new TextStyle(color: Colors.yellow,fontSize: 20.0),
+                            style: new TextStyle(color: Colors.yellow,fontSize: (20.0 / 853) * MediaQuery.of(context).size.height),
                           ): TextSpan(),
                           TextSpan(text: '    '),
                           new TextSpan(
                             text: this.title,
-                            style: new TextStyle(color: Colors.white, fontSize: 18.0),
+                            style: new TextStyle(color: Colors.white, fontSize: (18.0 / 853) * MediaQuery.of(context).size.height),
                           ),
                         ],
                       ),

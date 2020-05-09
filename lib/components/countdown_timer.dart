@@ -33,8 +33,8 @@ class _CountDownTimerState extends State<CountDownTimer> with TickerProviderStat
         return Stack(
           children: <Widget>[
             Container(
-              width: 200.0,
-              height: 200.0,
+              width: (200.0 / 853) * MediaQuery.of(context).size.height,
+              height: (200.0 / 853) * MediaQuery.of(context).size.height,
               child: CustomPaint(
                   painter: CustomTimerPainter(
                     animation: controller,
@@ -53,7 +53,7 @@ class _CountDownTimerState extends State<CountDownTimer> with TickerProviderStat
                   Text(
                     timerString,
                     style: TextStyle(
-                        fontSize: 40.0,
+                        fontSize: (40.0 / 853) * MediaQuery.of(context).size.height,
                         color: Colors.white),
                   ),
                 ],

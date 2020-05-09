@@ -84,7 +84,7 @@ class _DialogStepTransitionState extends State<DialogStepTransition> {
                   top: (position / 853) * MediaQuery.of(context).size.height,
                   child: Container(
                     width: MediaQuery.of(context).size.width * 60 / 100,
-                    height: 40.0,
+                    height: (40.0 / 853) * MediaQuery.of(context).size.height,
                     decoration: new BoxDecoration(
                       color: Colors.transparent,
                       shape: BoxShape.rectangle,
@@ -133,7 +133,7 @@ class _DialogStepTransitionState extends State<DialogStepTransition> {
     MoneyManagement.jackpotsText.reversed.forEach((element) {
       widgets.add(Container(
         width: MediaQuery.of(context).size.width * 70 /100,
-        padding: EdgeInsets.only(top: 3.0, bottom: 1.0),
+        padding: EdgeInsets.only(top: (3.0 / 853) * MediaQuery.of(context).size.height, bottom: (1.0 / 853) * MediaQuery.of(context).size.height),
         child: Text(
           '\$ $element',
           textAlign: TextAlign.center,
