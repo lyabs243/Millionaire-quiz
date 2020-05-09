@@ -28,7 +28,8 @@ class _DialogStepTransitionState extends State<DialogStepTransition> {
     super.initState();
     //for the first level (500) there is no animation
     if(this.widget.from == -1) {
-      position = MoneyManagement.jackpotsPositions[0];
+      position = 530;
+      maxPostion = MoneyManagement.jackpotsPositions[0];
     }
     else {
       position = MoneyManagement.jackpotsPositions[this.widget.from];
@@ -49,7 +50,7 @@ class _DialogStepTransitionState extends State<DialogStepTransition> {
   }
 
   dialogContent(BuildContext context) {
-    if(!isAnimating && this.widget.from > -1) {
+    if(!isAnimating) {
       animTransition();
     }
     return Container(
