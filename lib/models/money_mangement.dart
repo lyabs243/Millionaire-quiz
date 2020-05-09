@@ -1,13 +1,17 @@
 class MoneyManagement {
 
-  List<int> jackpots = [500, 1000, 2000, 3000, 5000, 7500, 10000, 12500, 15000, 25000, 50000, 100000, 250000, 500000,
+  static List<int> jackpots = [500, 1000, 2000, 3000, 5000, 7500, 10000, 12500, 15000, 25000, 50000, 100000, 250000, 500000,
   1000000];
+  static List<String> jackpotsText = ['        500', '     1 000', '     2 000', '     3 000', '     5 000',
+    '     7 500', '    10 000', '    12 500', '    15 000', '    25 000', '    50 000', '   100 000', '   250 000',
+    '   500 000', '1 000 000'];
+  static List<double> jackpotsPositions = [516, 480, 444, 406, 368, 332, 295, 258, 222, 184, 148, 110, 72, 35, 0];
 
   /**
    * helps to return the minimum amount compared to a level when the player lost, for example if the player had $ 3000
    * and he failed, his sum will be reduced to $ 500
    */
-  List<int> levelsMinimumMoney = [500, 5000, 25000];
+  static List<int> levelsMinimumMoney = [500, 5000, 25000, 1000000];
   int currentStep = 0;
 
   /**
@@ -25,6 +29,7 @@ class MoneyManagement {
    */
   int playerFail(int level) {
     if(currentStep > 0) {
+      currentStep = jackpots.indexOf(levelsMinimumMoney[level]);
       return levelsMinimumMoney[level];
     }
     return 0;

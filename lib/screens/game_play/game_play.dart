@@ -7,6 +7,7 @@ import 'package:millionaire_quiz/models/answer.dart';
 import 'package:millionaire_quiz/models/question.dart';
 import 'components/dialog_game_finished.dart';
 import '../../models/money_mangement.dart';
+import 'components/dialog_step_transition.dart';
 
 class GamePlay extends StatefulWidget {
 
@@ -69,7 +70,7 @@ class _GamePlayState extends State<GamePlay>  with TickerProviderStateMixin {
     initQuestions();
   }
 
-  initQuestions() {
+  initQuestions({transition: false}) {
     current_question_index = 0;
     setState(() {
       is_loading = true;
@@ -85,8 +86,12 @@ class _GamePlayState extends State<GamePlay>  with TickerProviderStateMixin {
         setState(() {
           current_question = questions[current_question_index++];
         });
-        controller.reverse(
-            from: 30.0);
+        if(transition) {
+          showTransition();
+        }
+        else {
+          controller.reverse(from: 30.0);
+        }
       }
     });
   }
@@ -196,11 +201,13 @@ class _GamePlayState extends State<GamePlay>  with TickerProviderStateMixin {
                   ButtonQuiz(
                     current_question.answers[0].description,
                         () async {
-                      setState(() {
-                        isAnswerAClicked = true;
-                        selectedAnswerIndex = 0;
-                      });
-                      checkAnswer(0);
+                      if(!checkingAnswerFinished) {
+                        setState(() {
+                          isAnswerAClicked = true;
+                          selectedAnswerIndex = 0;
+                        });
+                        checkAnswer(0);
+                      }
                     },
                     textLeft: 'A:',
                     buttonColor: getAnswerButtonColor(0),
@@ -209,11 +216,13 @@ class _GamePlayState extends State<GamePlay>  with TickerProviderStateMixin {
                   ButtonQuiz(
                     current_question.answers[1].description,
                         () async {
-                      setState(() {
-                        isAnswerBClicked = true;
-                        selectedAnswerIndex = 1;
-                      });
-                      checkAnswer(1);
+                      if(!checkingAnswerFinished) {
+                        setState(() {
+                          isAnswerBClicked = true;
+                          selectedAnswerIndex = 1;
+                        });
+                        checkAnswer(1);
+                      }
                     },
                     textLeft: 'B:',
                     buttonColor: getAnswerButtonColor(1),
@@ -222,11 +231,13 @@ class _GamePlayState extends State<GamePlay>  with TickerProviderStateMixin {
                   ButtonQuiz(
                     current_question.answers[2].description,
                         () async{
-                      setState(() {
-                        isAnswerCClicked = true;
-                        selectedAnswerIndex = 2;
-                      });
-                      checkAnswer(2);
+                      if(!checkingAnswerFinished) {
+                        setState(() {
+                          isAnswerCClicked = true;
+                          selectedAnswerIndex = 2;
+                        });
+                        checkAnswer(2);
+                      }
                     },
                     textLeft: 'C:',
                     buttonColor: getAnswerButtonColor(2),
@@ -235,11 +246,13 @@ class _GamePlayState extends State<GamePlay>  with TickerProviderStateMixin {
                   ButtonQuiz(
                     current_question.answers[3].description,
                         () async {
-                      setState(() {
-                        isAnswerDClicked = true;
-                        selectedAnswerIndex = 3;
-                      });
-                      checkAnswer(3);
+                      if(!checkingAnswerFinished) {
+                        setState(() {
+                          isAnswerDClicked = true;
+                          selectedAnswerIndex = 3;
+                        });
+                        checkAnswer(3);
+                      }
                     },
                     textLeft: 'D:',
                     buttonColor: getAnswerButtonColor(3),
@@ -333,32 +346,44 @@ class _GamePlayState extends State<GamePlay>  with TickerProviderStateMixin {
     setState(() {
       checkingAnswerFinished = false;
       selectedAnswerIndex = -1;
+    });
       //load another question
       if(answer.is_valid_answer && controller.value > 0) {
         currentMoney = moneyManagement.stepUp();
         if(current_question_index < questions.length) {
-          current_question = questions[current_question_index++];
-          controller.stop();
-          controller.reverse(from: 30);
+          setState(() {
+            current_question = questions[current_question_index++];
+            controller.stop();
+          });
+          showTransition();
         }
         else {
           if(level < 2) {
             setState(() {
               level += 1;
-              initQuestions();
+              initQuestions(transition: true);
             });
           }
           else {
             //jackpot player becomes millionaire
-            finishGame(jackpot: true);
+            showTransition(finish: true);
           }
         }
       }
       else {
-        currentMoney = moneyManagement.playerFail(level);
-        finishGame();
+        int stepBefore = moneyManagement.currentStep-1;
+        setState(() {
+          currentMoney = moneyManagement.playerFail(level);
+        });
+        int stepAfter = moneyManagement.currentStep;
+        //show transition of losing money when failing question
+        if(stepBefore > 1) {
+          showTransition(start: stepBefore, end: stepAfter, finish: true, jackpot: false, reverse: true);
+        }
+        else {
+          finishGame();
+        }
       }
-    });
   }
 
   finishGame({jackpot: false}) {
@@ -372,6 +397,30 @@ class _GamePlayState extends State<GamePlay>  with TickerProviderStateMixin {
       }
       else {
         Navigator.pop(context);
+      }
+    });
+  }
+
+  Future showTransition({finish: false, start: 0, end: 0, jackpot: true, reverse: false}) async {
+    int from, to;
+    if(reverse) {
+      from = start;
+      to = end;
+    }
+    else {
+      from = moneyManagement.currentStep - 2;
+      to = moneyManagement.currentStep - 1;
+    }
+    showDialog(
+      context: context,
+      barrierDismissible: false,
+      builder: (BuildContext context) => DialogStepTransition(from, to),
+    ).then((value) {
+      if(finish) {
+        finishGame(jackpot: jackpot);
+      }
+      else {
+        controller.reverse(from: 30);
       }
     });
   }
