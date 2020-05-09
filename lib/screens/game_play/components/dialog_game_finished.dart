@@ -5,8 +5,12 @@ class DialogGameFinished extends StatelessWidget {
 
   int earningValue = 0;
   bool jackpot;
+  String eaningValueDescription;
 
-  DialogGameFinished(this.earningValue, {this.jackpot: false});
+  DialogGameFinished(this.earningValue, {this.jackpot: false}) {
+    eaningValueDescription = MoneyManagement.jackpotsText[MoneyManagement.jackpots.indexOf(this.earningValue)].trim();
+  }
+
 
   @override
   Widget build(BuildContext context) {
@@ -65,8 +69,8 @@ class DialogGameFinished extends StatelessWidget {
               ),
               SizedBox(height: 16.0),
               Text(
-                (jackpot)? 'Congratulation You ara new millionaire! Get your check of \$ $earningValue !'
-                : 'You are not millionaire... Your earn \$ $earningValue !',
+                (jackpot)? 'Congratulation You ara new millionaire! Get your check of \$ $eaningValueDescription !'
+                : 'You are not millionaire... Your earn \$ $eaningValueDescription !',
                 textAlign: TextAlign.center,
                 textScaleFactor: 1.2,
                 style: TextStyle(

@@ -41,6 +41,13 @@ class _GamePlayState extends State<GamePlay>  with TickerProviderStateMixin {
     }
   }
 
+  String getMoneyDescription() {
+    if (currentMoney == 0) {
+      return '0';
+    }
+    return MoneyManagement.jackpotsText[MoneyManagement.jackpots.indexOf(currentMoney)].trim();
+  }
+
   @override
   void initState() {
     super.initState();
@@ -171,7 +178,7 @@ class _GamePlayState extends State<GamePlay>  with TickerProviderStateMixin {
                 Padding(padding: EdgeInsets.only(bottom: (30.0 / 853) * MediaQuery.of(context).size.height),),
                 Container(
                   child: Text(
-                    '\$ $currentMoney',
+                    '\$ ${getMoneyDescription()}',
                     textScaleFactor: 2.0,
                     style: TextStyle(
                         color: Colors.yellow
