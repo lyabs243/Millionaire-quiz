@@ -1,8 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:millionaire_quiz/screens/home/home.dart';
 import 'package:millionaire_quiz/styles/style.dart';
+import 'package:admob_flutter/admob_flutter.dart';
+import 'services/constants.dart' as constants;
 
-void main() => runApp(MyApp());
+void main() {
+  runApp(MyApp());
+}
 
 class MyApp extends StatefulWidget {
 
@@ -16,6 +20,7 @@ class _MyAppState extends State<MyApp> {
 
   @override
   Widget build(BuildContext context) {
+    Admob.initialize(constants.ADMOB_APP_ID);
     return MaterialApp(
       title: 'Flutter Demo',
       debugShowCheckedModeBanner: false,
