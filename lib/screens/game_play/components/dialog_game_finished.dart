@@ -5,10 +5,14 @@ class DialogGameFinished extends StatelessWidget {
 
   int earningValue = 0;
   bool jackpot;
-  String eaningValueDescription;
+  String eaningValueDescription = '0';
 
   DialogGameFinished(this.earningValue, {this.jackpot: false}) {
-    eaningValueDescription = MoneyManagement.jackpotsText[MoneyManagement.jackpots.indexOf(this.earningValue)].trim();
+    if(earningValue > 0) {
+      eaningValueDescription =
+          MoneyManagement.jackpotsText[MoneyManagement.jackpots.indexOf(
+              this.earningValue)].trim();
+    }
   }
 
 
