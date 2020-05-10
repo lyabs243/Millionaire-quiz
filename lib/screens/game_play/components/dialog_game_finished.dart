@@ -1,13 +1,26 @@
 import 'package:flutter/material.dart';
 import '../../../models/money_mangement.dart';
+import 'package:admob_flutter/admob_flutter.dart';
+import '../../../services/constants.dart' as constants;
 
 class DialogGameFinished extends StatelessWidget {
 
   int earningValue = 0;
-  bool jackpot;
+  bool jackpot, playAgain = false;
   String eaningValueDescription = '0';
+  AdmobBanner admobBanner;
+  AdmobInterstitial interstitialAd;
+  BuildContext _context;
 
   DialogGameFinished(this.earningValue, {this.jackpot: false}) {
+    interstitialAd = AdmobInterstitial(
+      adUnitId: constants.ADMOB_INTERSTITIAL_ID,
+      listener: (AdmobAdEvent event, Map<String, dynamic> args) async {
+        if(event == AdmobAdEvent.closed || event == AdmobAdEvent.failedToLoad) {
+          Navigator.of(_context).pop(playAgain);
+        }
+      },
+    );
     if(earningValue > 0) {
       eaningValueDescription =
           MoneyManagement.jackpotsText[MoneyManagement.jackpots.indexOf(
@@ -18,6 +31,18 @@ class DialogGameFinished extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    _context = context;
+    interstitialAd.isLoaded.then((value) {
+      if(!value) {
+        interstitialAd.load();
+      }
+    });
+    admobBanner = AdmobBanner(
+      adUnitId: constants.ADMOB_BANNER_ID,
+      adSize: AdmobBannerSize.LARGE_BANNER,
+      listener: (AdmobAdEvent event, Map<String, dynamic> args) {
+      },
+    );
     return Dialog(
       shape: RoundedRectangleBorder(
         borderRadius: BorderRadius.circular(Consts.padding),
@@ -59,30 +84,34 @@ class DialogGameFinished extends StatelessWidget {
                 (jackpot)? 'Jackpot'
                 : 'Game Over',
                 style: TextStyle(
-                  fontSize: 24.0,
+                  fontSize: (24.0 / 853) * MediaQuery.of(context).size.height,
                   fontWeight: FontWeight.w700,
                   color: Colors.white
                 ),
               ),
-              SizedBox(height: 16.0),
+              SizedBox(height: (8.0 / 853) * MediaQuery.of(context).size.height),
+              Container(
+                child: admobBanner,
+              ),
+              SizedBox(height: (8.0 / 853) * MediaQuery.of(context).size.height),
               Container(
                 height: MediaQuery.of(context).size.height / 8,
                 child: Image.asset(
                   'assets/ic_dol.png'
                 ),
               ),
-              SizedBox(height: 16.0),
+              SizedBox(height: (16.0 / 853) * MediaQuery.of(context).size.height),
               Text(
                 (jackpot)? 'Congratulation You ara new millionaire! Get your check of \$ $eaningValueDescription !'
                 : 'You are not millionaire... Your earn \$ $eaningValueDescription !',
                 textAlign: TextAlign.center,
                 textScaleFactor: 1.2,
                 style: TextStyle(
-                  fontSize: 16.0,
+                  fontSize: (16.0 / 853) * MediaQuery.of(context).size.height,
                   color: Colors.white
                 ),
               ),
-              SizedBox(height: 24.0),
+              SizedBox(height: (24.0 / 853) * MediaQuery.of(context).size.height),
               Align(
                 alignment: Alignment.bottomRight,
                 child: Row(
@@ -90,7 +119,8 @@ class DialogGameFinished extends StatelessWidget {
                   children: <Widget>[
                     FlatButton(
                       onPressed: () {
-                        Navigator.of(context).pop(false); // To close the dialog
+                        playAgain = false;
+                        interstitialAd.show();
                       },
                       child: Text(
                         'Go Home',
@@ -101,7 +131,8 @@ class DialogGameFinished extends StatelessWidget {
                     ),
                     FlatButton(
                       onPressed: () {
-                        Navigator.of(context).pop(true); // To close the dialog
+                        playAgain = true;
+                        interstitialAd.show();
                       },
                       child: Text(
                         'Play Again',

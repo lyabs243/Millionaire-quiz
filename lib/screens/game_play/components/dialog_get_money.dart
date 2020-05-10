@@ -1,10 +1,13 @@
 import 'package:flutter/material.dart';
 import '../../../models/money_mangement.dart';
+import '../../../services/constants.dart' as constants;
+import 'package:admob_flutter/admob_flutter.dart';
 
 class DialogGetMoney extends StatelessWidget {
 
   int earningValue = 0;
   String eaningValueDescription = '0';
+  AdmobBanner admobBanner;
 
   DialogGetMoney(this.earningValue) {
     if(earningValue > 0) {
@@ -17,6 +20,12 @@ class DialogGetMoney extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    admobBanner = AdmobBanner(
+      adUnitId: constants.ADMOB_BANNER_ID,
+      adSize: AdmobBannerSize.LARGE_BANNER,
+      listener: (AdmobAdEvent event, Map<String, dynamic> args) {
+      },
+    );
     return Dialog(
       shape: RoundedRectangleBorder(
         borderRadius: BorderRadius.circular(Consts.padding),
@@ -54,17 +63,20 @@ class DialogGetMoney extends StatelessWidget {
           child: Column(
             mainAxisSize: MainAxisSize.min, // To make the card compact
             children: <Widget>[
-              SizedBox(height: 16.0),
+              Container(
+                child: admobBanner,
+              ),
+              SizedBox(height: (16.0 / 853) * MediaQuery.of(context).size.height),
               Text(
                 'You wins \$ $eaningValueDescription, Do you wants to get money? ',
                 textAlign: TextAlign.center,
                 textScaleFactor: 1.2,
                 style: TextStyle(
-                  fontSize: 16.0,
+                  fontSize: (16.0 / 853) * MediaQuery.of(context).size.height,
                   color: Colors.white
                 ),
               ),
-              SizedBox(height: 24.0),
+              SizedBox(height: (24.0 / 853) * MediaQuery.of(context).size.height),
               Align(
                 alignment: Alignment.bottomRight,
                 child: Row(

@@ -9,6 +9,8 @@ import 'package:millionaire_quiz/screens/game_play/components/dialog_get_money.d
 import 'components/dialog_game_finished.dart';
 import '../../models/money_mangement.dart';
 import 'components/dialog_step_transition.dart';
+import 'package:admob_flutter/admob_flutter.dart';
+import '../../services/constants.dart' as constants;
 
 class GamePlay extends StatefulWidget {
 
@@ -24,6 +26,7 @@ class _GamePlayState extends State<GamePlay>  with TickerProviderStateMixin {
   List<Question> questions = [];
   BuildContext _context;
   int level = 0;
+  AdmobInterstitial interstitialAd;
   int current_question_index = 0, currentMoney = 0;
   Question current_question;
   int timeToWaitAfterAnswer = 1, selectedAnswerIndex = -1;
@@ -52,6 +55,19 @@ class _GamePlayState extends State<GamePlay>  with TickerProviderStateMixin {
   @override
   void initState() {
     super.initState();
+    interstitialAd = AdmobInterstitial(
+      adUnitId: constants.ADMOB_INTERSTITIAL_ID,
+      listener: (AdmobAdEvent event, Map<String, dynamic> args) async {
+        if(event == AdmobAdEvent.closed || event == AdmobAdEvent.failedToLoad) {
+          setState(() {
+            is_loading = false;
+          });
+          showTransition();
+          interstitialAd.load();
+        }
+      },
+    );
+    interstitialAd.load();
     moneyManagement = new MoneyManagement();
     controller = AnimationController(
       vsync: this,
@@ -78,30 +94,43 @@ class _GamePlayState extends State<GamePlay>  with TickerProviderStateMixin {
     initQuestions();
   }
 
-  initQuestions({transition: false}) {
+  Future initQuestions({transition: false}) async {
     current_question_index = 0;
     setState(() {
       is_loading = true;
       checkingAnswerFinished = false;
       selectedAnswerIndex = -1;
     });
-    Question.getQuestions(_context, level).then((value) {
-      questions = value;
-      setState(() {
-        is_loading = false;
+    if(transition) {
+      Question.getQuestions(_context, level).then((value) {
+        questions = value;
+        if (questions.length > 0) {
+          setState(() {
+            current_question = questions[current_question_index++];
+          });
+        }
+        interstitialAd.show();
       });
-      if(questions.length > 0) {
+    }
+    else {
+      Question.getQuestions(_context, level).then((value) {
+        questions = value;
         setState(() {
-          current_question = questions[current_question_index++];
+          is_loading = false;
         });
-        if(transition) {
-          showTransition();
+        if (questions.length > 0) {
+          setState(() {
+            current_question = questions[current_question_index++];
+          });
+          if (transition) {
+            showTransition();
+          }
+          else {
+            controller.reverse(from: 30.0);
+          }
         }
-        else {
-          controller.reverse(from: 30.0);
-        }
-      }
-    });
+      });
+    }
   }
 
   @override
