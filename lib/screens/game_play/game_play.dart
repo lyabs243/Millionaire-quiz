@@ -142,7 +142,8 @@ class _GamePlayState extends State<GamePlay>  with TickerProviderStateMixin {
               children: <Widget>[
                 Padding(padding: EdgeInsets.only(top: 40.0),),
                 Row(
-                  mainAxisAlignment: MainAxisAlignment.end,
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  mainAxisSize: MainAxisSize.min,
                   children: <Widget>[
                     (currentMoney > 0)?
                     Container(
@@ -167,8 +168,10 @@ class _GamePlayState extends State<GamePlay>  with TickerProviderStateMixin {
                         child: SizedBox(
                           child: Text(
                             'Get money',
+                            textAlign: TextAlign.center,
                             style: new TextStyle(color: Colors.white, fontSize: (18.0 / 853) * MediaQuery.of(context).size.height),
                           ),
+                          width: MediaQuery.of(context).size.width * 25 / 100,
                         ),
                         color: Colors.black,
                         elevation: 10.0,
@@ -179,35 +182,44 @@ class _GamePlayState extends State<GamePlay>  with TickerProviderStateMixin {
                         ),
                       ),
                     ): Container(),
-                    ButtonCircle(
-                        Icon(
-                          Icons.filter_center_focus,
-                          size: (25.0 / 853) * MediaQuery.of(context).size.height,
-                          color: Colors.white,
-                        ),
-                            () {
+                    Container(
+                      child: ButtonCircle(
+                          Icon(
+                            Icons.filter_center_focus,
+                            size: (25.0 / 853) * MediaQuery.of(context).size.height,
+                            color: Colors.white,
+                          ),
+                              () {
 
-                        }
+                          }
+                      ),
+                      width: (MediaQuery.of(context).size.width * 70 / 100) / 4,
                     ),
-                    ButtonCircle(
-                        Icon(
-                          Icons.call,
-                          size: (25.0 / 853) * MediaQuery.of(context).size.height,
-                          color: Colors.white,
-                        ),
-                            () {
+                    Container(
+                      child: ButtonCircle(
+                          Icon(
+                            Icons.call,
+                            size: (25.0 / 853) * MediaQuery.of(context).size.height,
+                            color: Colors.white,
+                          ),
+                              () {
 
-                        }
+                          }
+                      ),
+                      width: (MediaQuery.of(context).size.width * 70 / 100) / 4,
                     ),
-                    ButtonCircle(
-                        Icon(
-                          Icons.group,
-                          size: (25.0 / 853) * MediaQuery.of(context).size.height,
-                          color: Colors.white,
-                        ),
-                            () {
+                    Container(
+                      child: ButtonCircle(
+                          Icon(
+                            Icons.group,
+                            size: (25.0 / 853) * MediaQuery.of(context).size.height,
+                            color: Colors.white,
+                          ),
+                              () {
 
-                        }
+                          }
+                      ),
+                      width: (MediaQuery.of(context).size.width * 70 / 100) / 4,
                     )
                   ],
                 ),
