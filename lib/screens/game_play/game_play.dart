@@ -144,6 +144,7 @@ class _GamePlayState extends State<GamePlay>  with TickerProviderStateMixin {
                 Row(
                   mainAxisAlignment: MainAxisAlignment.end,
                   children: <Widget>[
+                    (currentMoney > 0)?
                     Container(
                       height: (40.0 / 853) * MediaQuery.of(context).size.height,
                       child: new RaisedButton(
@@ -177,7 +178,7 @@ class _GamePlayState extends State<GamePlay>  with TickerProviderStateMixin {
                           side: BorderSide(color: Theme.of(context).primaryColor, width: 2.0)
                         ),
                       ),
-                    ),
+                    ): Container(),
                     ButtonCircle(
                         Icon(
                           Icons.filter_center_focus,
