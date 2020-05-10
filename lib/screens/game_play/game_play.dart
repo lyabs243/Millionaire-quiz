@@ -5,6 +5,7 @@ import 'package:millionaire_quiz/components/countdown_timer.dart';
 import 'package:millionaire_quiz/components/quiz_page.dart';
 import 'package:millionaire_quiz/models/answer.dart';
 import 'package:millionaire_quiz/models/question.dart';
+import 'package:millionaire_quiz/screens/game_play/components/dialog_get_money.dart';
 import 'components/dialog_game_finished.dart';
 import '../../models/money_mangement.dart';
 import 'components/dialog_step_transition.dart';
@@ -143,6 +144,40 @@ class _GamePlayState extends State<GamePlay>  with TickerProviderStateMixin {
                 Row(
                   mainAxisAlignment: MainAxisAlignment.end,
                   children: <Widget>[
+                    Container(
+                      height: (40.0 / 853) * MediaQuery.of(context).size.height,
+                      child: new RaisedButton(
+                        onPressed: () {
+                          controller.stop();
+                          showDialog(
+                            context: context,
+                            barrierDismissible: false,
+                            builder: (BuildContext context) => DialogGetMoney(currentMoney),
+                          ).then((value) {
+                            if(value) {
+                              finishGame();
+                            }
+                            else {
+                              controller.reverse(from: controller.value);
+                            }
+                          });
+                        },
+                        highlightColor: Colors.orange,
+                        child: SizedBox(
+                          child: Text(
+                            'Get money',
+                            style: new TextStyle(color: Colors.white, fontSize: (18.0 / 853) * MediaQuery.of(context).size.height),
+                          ),
+                        ),
+                        color: Colors.black,
+                        elevation: 10.0,
+                        textColor: Colors.white,
+                        shape: RoundedRectangleBorder(
+                          borderRadius: new BorderRadius.circular(30.0),
+                          side: BorderSide(color: Theme.of(context).primaryColor, width: 2.0)
+                        ),
+                      ),
+                    ),
                     ButtonCircle(
                         Icon(
                           Icons.filter_center_focus,
