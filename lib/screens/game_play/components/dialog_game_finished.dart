@@ -13,14 +13,17 @@ class DialogGameFinished extends StatelessWidget {
   BuildContext _context;
 
   DialogGameFinished(this.earningValue, {this.jackpot: false}) {
-    interstitialAd = AdmobInterstitial(
-      adUnitId: constants.ADMOB_INTERSTITIAL_ID,
-      listener: (AdmobAdEvent event, Map<String, dynamic> args) async {
-        if(event == AdmobAdEvent.closed || event == AdmobAdEvent.failedToLoad) {
-          Navigator.of(_context).pop(playAgain);
-        }
-      },
-    );
+    if(constants.SHOW_ADMOB) {
+      interstitialAd = AdmobInterstitial(
+        adUnitId: constants.ADMOB_INTERSTITIAL_ID,
+        listener: (AdmobAdEvent event, Map<String, dynamic> args) async {
+          if (event == AdmobAdEvent.closed ||
+              event == AdmobAdEvent.failedToLoad) {
+            Navigator.of(_context).pop(playAgain);
+          }
+        },
+      );
+    }
     if(earningValue > 0) {
       eaningValueDescription =
           MoneyManagement.jackpotsText[MoneyManagement.jackpots.indexOf(
@@ -32,17 +35,18 @@ class DialogGameFinished extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     _context = context;
-    interstitialAd.isLoaded.then((value) {
-      if(!value) {
-        interstitialAd.load();
-      }
-    });
-    admobBanner = AdmobBanner(
-      adUnitId: constants.ADMOB_BANNER_ID,
-      adSize: AdmobBannerSize.LARGE_BANNER,
-      listener: (AdmobAdEvent event, Map<String, dynamic> args) {
-      },
-    );
+    if(constants.SHOW_ADMOB) {
+      interstitialAd.isLoaded.then((value) {
+        if (!value) {
+          interstitialAd.load();
+        }
+      });
+      admobBanner = AdmobBanner(
+        adUnitId: constants.ADMOB_BANNER_ID,
+        adSize: AdmobBannerSize.LARGE_BANNER,
+        listener: (AdmobAdEvent event, Map<String, dynamic> args) {},
+      );
+    }
     return Dialog(
       shape: RoundedRectangleBorder(
         borderRadius: BorderRadius.circular(Consts.padding),
@@ -90,9 +94,10 @@ class DialogGameFinished extends StatelessWidget {
                 ),
               ),
               SizedBox(height: (8.0 / 853) * MediaQuery.of(context).size.height),
+              (constants.SHOW_ADMOB)?
               Container(
                 child: admobBanner,
-              ),
+              ): Container(),
               SizedBox(height: (8.0 / 853) * MediaQuery.of(context).size.height),
               Container(
                 height: MediaQuery.of(context).size.height / 8,
@@ -120,7 +125,12 @@ class DialogGameFinished extends StatelessWidget {
                     FlatButton(
                       onPressed: () {
                         playAgain = false;
-                        interstitialAd.show();
+                        if(constants.SHOW_ADMOB) {
+                          interstitialAd.show();
+                        }
+                        else {
+                          Navigator.of(_context).pop(playAgain);
+                        }
                       },
                       child: Text(
                         'Go Home',
@@ -132,7 +142,12 @@ class DialogGameFinished extends StatelessWidget {
                     FlatButton(
                       onPressed: () {
                         playAgain = true;
-                        interstitialAd.show();
+                        if(constants.SHOW_ADMOB) {
+                          interstitialAd.show();
+                        }
+                        else {
+                          Navigator.of(_context).pop(playAgain);
+                        }
                       },
                       child: Text(
                         'Play Again',

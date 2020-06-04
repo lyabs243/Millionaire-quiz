@@ -1,6 +1,7 @@
 final String BASE_URL = 'http://lyabs243.notifygroup.org/millionaire/';
 
 final int QUESTION_NUMBER = 5;
+final bool SHOW_ADMOB = true;
 
 const ADMOB_APP_ID = 'ca-app-pub-3940256099942544~3347511713';
 

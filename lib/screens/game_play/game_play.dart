@@ -6,6 +6,7 @@ import 'package:millionaire_quiz/components/quiz_page.dart';
 import 'package:millionaire_quiz/models/answer.dart';
 import 'package:millionaire_quiz/models/question.dart';
 import 'package:millionaire_quiz/screens/game_play/components/dialog_get_money.dart';
+import 'components/dialog_call_friend.dart';
 import 'components/dialog_game_finished.dart';
 import '../../models/money_mangement.dart';
 import 'components/dialog_step_transition.dart';
@@ -26,12 +27,14 @@ class _GamePlayState extends State<GamePlay>  with TickerProviderStateMixin {
   List<Question> questions = [];
   BuildContext _context;
   int level = 0;
-  AdmobInterstitial interstitialAd;
+  AdmobInterstitial interstitialAd, interstitialAdBonusButtons;
   int current_question_index = 0, currentMoney = 0;
   Question current_question;
   int timeToWaitAfterAnswer = 1, selectedAnswerIndex = -1;
   bool checkingAnswerFinished = false, doFlash = false;
   MoneyManagement moneyManagement;
+  bool callFriendEnable = true;
+  Color callFriendBorderColor = Colors.blue, callFriendFillColor = Colors.black;
 
   AnimationController controller;
 
@@ -55,19 +58,45 @@ class _GamePlayState extends State<GamePlay>  with TickerProviderStateMixin {
   @override
   void initState() {
     super.initState();
-    interstitialAd = AdmobInterstitial(
-      adUnitId: constants.ADMOB_INTERSTITIAL_ID,
-      listener: (AdmobAdEvent event, Map<String, dynamic> args) async {
-        if(event == AdmobAdEvent.closed || event == AdmobAdEvent.failedToLoad) {
-          setState(() {
-            is_loading = false;
-          });
-          showTransition();
-          interstitialAd.load();
-        }
-      },
-    );
-    interstitialAd.load();
+    if(constants.SHOW_ADMOB) {
+      interstitialAd = AdmobInterstitial(
+        adUnitId: constants.ADMOB_INTERSTITIAL_ID,
+        listener: (AdmobAdEvent event, Map<String, dynamic> args) async {
+          if (event == AdmobAdEvent.closed ||
+              event == AdmobAdEvent.failedToLoad) {
+            setState(() {
+              is_loading = false;
+            });
+            showTransition();
+            interstitialAd.load();
+          }
+        },
+      );
+      interstitialAdBonusButtons = AdmobInterstitial(
+        adUnitId: constants.ADMOB_INTERSTITIAL_ID,
+        listener: (AdmobAdEvent event, Map<String, dynamic> args) async {
+          if (event == AdmobAdEvent.closed ||
+              event == AdmobAdEvent.failedToLoad) {
+            showDialog(
+              context: context,
+              barrierDismissible: false,
+              builder: (BuildContext context) =>
+                  DialogCallFriend(current_question),
+            ).then((value) {
+              controller.reverse(from: controller.value);
+              setState(() {
+                callFriendFillColor = Colors.grey;
+                callFriendBorderColor = Colors.white;
+                callFriendEnable = false;
+              });
+            });
+            interstitialAdBonusButtons.load();
+          }
+        },
+      );
+      interstitialAd.load();
+      interstitialAdBonusButtons.load();
+    }
     moneyManagement = new MoneyManagement();
     controller = AnimationController(
       vsync: this,
@@ -85,6 +114,11 @@ class _GamePlayState extends State<GamePlay>  with TickerProviderStateMixin {
     level = 0;
     moneyManagement.currentStep = 0;
     currentMoney = 0;
+    setState(() {
+      callFriendEnable = true;
+      callFriendBorderColor = Colors.blue;
+      callFriendFillColor = Colors.black;
+    });
     initData();
   }
 
@@ -231,9 +265,31 @@ class _GamePlayState extends State<GamePlay>  with TickerProviderStateMixin {
                             size: (25.0 / 853) * MediaQuery.of(context).size.height,
                             color: Colors.white,
                           ),
-                              () {
-
-                          }
+                          () {
+                            controller.stop();
+                            if (callFriendEnable) {
+                              if(constants.SHOW_ADMOB) {
+                                interstitialAdBonusButtons.show();
+                              }
+                              else {
+                                showDialog(
+                                  context: context,
+                                  barrierDismissible: false,
+                                  builder: (BuildContext context) =>
+                                      DialogCallFriend(current_question),
+                                ).then((value) {
+                                  controller.reverse(from: controller.value);
+                                  setState(() {
+                                    callFriendFillColor = Colors.grey;
+                                    callFriendBorderColor = Colors.white;
+                                    callFriendEnable = false;
+                                  });
+                                });
+                              }
+                            }
+                          },
+                        borderColor: callFriendBorderColor,
+                        fillColor: callFriendFillColor,
                       ),
                       width: (MediaQuery.of(context).size.width * 70 / 100) / 4,
                     ),
