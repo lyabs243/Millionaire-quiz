@@ -58,7 +58,8 @@ class DialogGameFinished extends StatelessWidget {
   }
 
   dialogContent(BuildContext context) {
-    return Stack(
+    return WillPopScope(
+      child: Stack(
       children: <Widget>[
         Container(
           padding: EdgeInsets.only(
@@ -181,6 +182,10 @@ class DialogGameFinished extends StatelessWidget {
           )
         ),//...top circlular image part,
       ],
+    ),
+      onWillPop: () {
+
+      },
     );
   }
 
