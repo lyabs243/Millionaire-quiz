@@ -39,7 +39,7 @@ class _GamePlayState extends State<GamePlay>  with TickerProviderStateMixin {
   AnimationController controller;
 
   bool is_loading = true, isAnswerAClicked = false, isAnswerBClicked = false, isAnswerCClicked = false,
-      isAnswerDClicked = false;
+      isAnswerDClicked = false, canShowDialog = false, canShowTransition = false;
 
   @override
   void setState(fn) {
@@ -64,11 +64,14 @@ class _GamePlayState extends State<GamePlay>  with TickerProviderStateMixin {
         listener: (AdmobAdEvent event, Map<String, dynamic> args) async {
           if (event == AdmobAdEvent.closed ||
               event == AdmobAdEvent.failedToLoad) {
-            setState(() {
-              is_loading = false;
-            });
-            showTransition();
-            interstitialAd.load();
+            if  (canShowTransition) {
+              setState(() {
+                is_loading = false;
+              });
+              showTransition();
+              interstitialAd.load();
+            }
+            canShowTransition = false;
           }
         },
       );
@@ -77,20 +80,23 @@ class _GamePlayState extends State<GamePlay>  with TickerProviderStateMixin {
         listener: (AdmobAdEvent event, Map<String, dynamic> args) async {
           if (event == AdmobAdEvent.closed ||
               event == AdmobAdEvent.failedToLoad) {
-            showDialog(
-              context: context,
-              barrierDismissible: false,
-              builder: (BuildContext context) =>
-                  DialogCallFriend(current_question),
-            ).then((value) {
-              controller.reverse(from: controller.value);
-              setState(() {
-                callFriendFillColor = Colors.grey;
-                callFriendBorderColor = Colors.white;
-                callFriendEnable = false;
+            if (canShowDialog) {
+              showDialog(
+                context: context,
+                barrierDismissible: false,
+                builder: (BuildContext context) =>
+                    DialogCallFriend(current_question),
+              ).then((value) {
+                controller.reverse(from: controller.value);
+                setState(() {
+                  callFriendFillColor = Colors.grey;
+                  callFriendBorderColor = Colors.white;
+                  callFriendEnable = false;
+                });
               });
-            });
-            interstitialAdBonusButtons.load();
+              interstitialAdBonusButtons.load();
+            }
+            canShowDialog = false;
           }
         },
       );
@@ -143,6 +149,7 @@ class _GamePlayState extends State<GamePlay>  with TickerProviderStateMixin {
             current_question = questions[current_question_index++];
           });
         }
+        canShowTransition = true;
         interstitialAd.show();
       });
     }
@@ -269,6 +276,7 @@ class _GamePlayState extends State<GamePlay>  with TickerProviderStateMixin {
                             controller.stop();
                             if (callFriendEnable) {
                               if(constants.SHOW_ADMOB) {
+                                canShowDialog = true;
                                 interstitialAdBonusButtons.show();
                               }
                               else {
