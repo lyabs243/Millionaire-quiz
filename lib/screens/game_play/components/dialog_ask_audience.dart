@@ -1,3 +1,5 @@
+import 'dart:math';
+
 import 'package:flutter/material.dart';
 import 'package:millionaire_quiz/models/question.dart';
 import '../../../models/money_mangement.dart';
@@ -9,12 +11,14 @@ class DialogAskAudience extends StatelessWidget {
   Question question;
   AdmobBanner admobBanner;
   String correctAnswer, answer;
-  int maxSize = 250;
+  int maxSize = 250, answerAValue = 0, answerBValue = 0, answerCValue = 0, answerDValue = 0, correctAnswerIndex;
+  List<int> listAudienceVal = [5, 5, 5, 5];
 
   DialogAskAudience(this.question) {
     int index = 0;
     question.answers.forEach((element) {
       if(element.is_valid_answer) {
+        correctAnswerIndex = index;
         answer = element.description;
         if(index == 0) {
           correctAnswer = 'A';
@@ -31,6 +35,8 @@ class DialogAskAudience extends StatelessWidget {
       }
       index++;
     });
+    generateAudienceValues();
+    initAudienceValues();
   }
 
 
@@ -107,7 +113,7 @@ class DialogAskAudience extends StatelessWidget {
                       children: <Widget>[
                         Container(
                           width: MediaQuery.of(context).size.width / 10,
-                          height: 5 / 100 * ((maxSize / 853) * MediaQuery.of(context).size.height),
+                          height: answerAValue / 100 * ((maxSize / 853) * MediaQuery.of(context).size.height),
                           color: Colors.blue,
                         ),
                         SizedBox(height: (4.0 / 853) * MediaQuery.of(context).size.height),
@@ -126,7 +132,7 @@ class DialogAskAudience extends StatelessWidget {
                       children: <Widget>[
                         Container(
                           width: MediaQuery.of(context).size.width / 10,
-                          height: 10 / 100 * ((maxSize / 853) * MediaQuery.of(context).size.height),
+                          height: answerBValue / 100 * ((maxSize / 853) * MediaQuery.of(context).size.height),
                           color: Colors.blue,
                         ),
                         SizedBox(height: (4.0 / 853) * MediaQuery.of(context).size.height),
@@ -145,7 +151,7 @@ class DialogAskAudience extends StatelessWidget {
                       children: <Widget>[
                         Container(
                           width: MediaQuery.of(context).size.width / 10,
-                          height: 70 / 100 * ((maxSize / 853) * MediaQuery.of(context).size.height),
+                          height: answerCValue / 100 * ((maxSize / 853) * MediaQuery.of(context).size.height),
                           color: Colors.blue,
                         ),
                         SizedBox(height: (4.0 / 853) * MediaQuery.of(context).size.height),
@@ -164,7 +170,7 @@ class DialogAskAudience extends StatelessWidget {
                       children: <Widget>[
                         Container(
                           width: MediaQuery.of(context).size.width / 10,
-                          height: 15 / 100 * ((maxSize / 853) * MediaQuery.of(context).size.height),
+                          height: answerDValue / 100 * ((maxSize / 853) * MediaQuery.of(context).size.height),
                           color: Colors.blue,
                         ),
                         SizedBox(height: (4.0 / 853) * MediaQuery.of(context).size.height),
@@ -224,6 +230,43 @@ class DialogAskAudience extends StatelessWidget {
     ),
       onWillPop: () {},
     );
+  }
+
+  //dispatch random values for answer audience
+  generateAudienceValues() {
+    //generate number between 55 and 80 for correct answer
+    int max = 55;
+    int min = 45;
+    Random rnd = new Random();
+    int correctAnswerValue = min + rnd.nextInt(max - min + 1);
+    listAudienceVal[correctAnswerIndex] += correctAnswerValue;
+
+    //init values for others answers
+    int index = 0;
+    question.answers.forEach((element) {
+      int sumAudience = sumAudienceVals();
+      if (sumAudience < 100 && index != correctAnswerIndex) {
+        max = 100 - sumAudience;
+        min = 1;
+        listAudienceVal[index] += min + rnd.nextInt(max - min + 1);
+      }
+      index++;
+    });
+  }
+
+  void initAudienceValues () {
+    answerAValue = listAudienceVal[0];
+    answerBValue = listAudienceVal[1];
+    answerCValue = listAudienceVal[2];
+    answerDValue = listAudienceVal[3];
+  }
+
+  int sumAudienceVals () {
+    int sum = 0;
+    listAudienceVal.forEach((element) {
+      sum += element;
+    });
+    return sum;
   }
 
 }
