@@ -7,6 +7,7 @@ import 'package:millionaire_quiz/components/countdown_timer.dart';
 import 'package:millionaire_quiz/components/quiz_page.dart';
 import 'package:millionaire_quiz/models/answer.dart';
 import 'package:millionaire_quiz/models/question.dart';
+import 'package:millionaire_quiz/models/score.dart';
 import 'package:millionaire_quiz/screens/game_play/components/dialog_ask_audience.dart';
 import 'package:millionaire_quiz/screens/game_play/components/dialog_get_money.dart';
 import 'package:millionaire_quiz/services/constants.dart';
@@ -658,6 +659,8 @@ class _GamePlayState extends State<GamePlay>  with TickerProviderStateMixin, Wid
         Navigator.pop(context);
       }
     });
+    Score score = Score(currentMoney);
+    Score.addLastResult(score);
   }
 
   void initAnswersVisibility() {

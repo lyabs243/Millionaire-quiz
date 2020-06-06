@@ -30,6 +30,7 @@ dev_dependencies:
   dio: ^3.0.8
   audioplayers: ^0.15.1
   admob_flutter: "^0.3.4"
+  shared_preferences: ^0.5.7+3
 
 
 # For information on the generic Dart part of this file, see the
