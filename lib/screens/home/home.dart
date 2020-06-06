@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:millionaire_quiz/components/button_circle.dart';
 import 'package:millionaire_quiz/components/button_quiz.dart';
+import 'package:millionaire_quiz/components/dialog_latest_results.dart';
 import 'package:millionaire_quiz/components/quiz_page.dart';
 import 'package:millionaire_quiz/screens/game_play/game_play.dart';
 import 'package:audioplayers/audio_cache.dart';
@@ -119,7 +120,11 @@ class _HomePageState extends State<HomePage>  with WidgetsBindingObserver {
                     ButtonQuiz(
                       'Score',
                       () {
-
+                        showDialog(
+                          context: context,
+                          barrierDismissible: false,
+                          builder: (BuildContext context) => DialogLatestResults(),
+                        );
                         },
                       textAlign: TextAlign.center,
                     ),
