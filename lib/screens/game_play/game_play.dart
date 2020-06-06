@@ -1,3 +1,5 @@
+import 'dart:math';
+
 import 'package:flutter/material.dart';
 import 'package:millionaire_quiz/components/button_circle.dart';
 import 'package:millionaire_quiz/components/button_quiz.dart';
@@ -34,9 +36,10 @@ class _GamePlayState extends State<GamePlay>  with TickerProviderStateMixin {
   int timeToWaitAfterAnswer = 1, selectedAnswerIndex = -1;
   bool checkingAnswerFinished = false, doFlash = false;
   MoneyManagement moneyManagement;
-  bool callFriendEnable = true, askAudienceEnable = false;
+  bool callFriendEnable = true, askAudienceEnable = true, hideAnswersEnable = true;
   Color callFriendBorderColor = Colors.blue, callFriendFillColor = Colors.black, askAudienceBorderColor = Colors.blue,
-  askAudienceFillColor = Colors.black;
+  askAudienceFillColor = Colors.black, hideAnswersBorderColor = Colors.blue, hideAnswersFillColor = Colors.black;
+  List<bool> answersVisible = [true, true, true, true];
 
   AnimationController controller;
 
@@ -82,7 +85,7 @@ class _GamePlayState extends State<GamePlay>  with TickerProviderStateMixin {
         listener: (AdmobAdEvent event, Map<String, dynamic> args) async {
           if (event == AdmobAdEvent.closed ||
               event == AdmobAdEvent.failedToLoad) {
-            if (canShowDialog) {
+            if (canShowDialog && currentBonusButtonIndex != 2) {
               showDialog(
                 context: context,
                 barrierDismissible: false,
@@ -106,8 +109,19 @@ class _GamePlayState extends State<GamePlay>  with TickerProviderStateMixin {
                   }
                 });
               });
-              interstitialAdBonusButtons.load();
             }
+            if(currentBonusButtonIndex == 2) {
+              currentBonusButtonIndex = -1;
+              controller.reverse(from: controller.value);
+              hideTwoAnswers();
+
+              setState(() {
+                hideAnswersFillColor = Colors.grey;
+                hideAnswersBorderColor = Colors.white;
+                hideAnswersEnable = false;
+              });
+            }
+            interstitialAdBonusButtons.load();
             canShowDialog = false;
           }
         },
@@ -140,6 +154,10 @@ class _GamePlayState extends State<GamePlay>  with TickerProviderStateMixin {
       askAudienceEnable = true;
       askAudienceBorderColor = Colors.blue;
       askAudienceFillColor = Colors.black;
+
+      hideAnswersEnable = true;
+      hideAnswersBorderColor = Colors.blue;
+      hideAnswersFillColor = Colors.black;
     });
     initData();
   }
@@ -275,9 +293,25 @@ class _GamePlayState extends State<GamePlay>  with TickerProviderStateMixin {
                             size: (25.0 / 853) * MediaQuery.of(context).size.height,
                             color: Colors.white,
                           ),
-                              () {
+                          () {
+                            if (hideAnswersEnable) {
+                              currentBonusButtonIndex = 2;
+                              controller.stop();
+                              if(constants.SHOW_ADMOB) {
+                                interstitialAdBonusButtons.show();
+                              }
+                              else {
+                                currentBonusButtonIndex = -1;
+                                hideAnswersEnable = false;
+                                controller.reverse(from: controller.value);
 
-                          }
+                                hideAnswersFillColor = Colors.grey;
+                                hideAnswersBorderColor = Colors.white;
+                              }
+                            }
+                          },
+                        borderColor: hideAnswersBorderColor,
+                        fillColor: hideAnswersFillColor,
                       ),
                       width: (MediaQuery.of(context).size.width * 70 / 100) / 4,
                     ),
@@ -289,9 +323,9 @@ class _GamePlayState extends State<GamePlay>  with TickerProviderStateMixin {
                             color: Colors.white,
                           ),
                           () {
-                            controller.stop();
-                            currentBonusButtonIndex = 0;
                             if (callFriendEnable) {
+                              controller.stop();
+                              currentBonusButtonIndex = 0;
                               if(constants.SHOW_ADMOB) {
                                 canShowDialog = true;
                                 interstitialAdBonusButtons.show();
@@ -326,9 +360,9 @@ class _GamePlayState extends State<GamePlay>  with TickerProviderStateMixin {
                             color: Colors.white,
                           ),
                           () {
-                            currentBonusButtonIndex = 1;
-                            controller.stop();
                             if (askAudienceEnable) {
+                              currentBonusButtonIndex = 1;
+                              controller.stop();
                               if(constants.SHOW_ADMOB) {
                                 canShowDialog = true;
                                 interstitialAdBonusButtons.show();
@@ -388,6 +422,7 @@ class _GamePlayState extends State<GamePlay>  with TickerProviderStateMixin {
                 Column(
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
+                    (answersVisible[0])?
                     ButtonQuiz(
                       current_question.answers[0].description,
                           () async {
@@ -401,8 +436,9 @@ class _GamePlayState extends State<GamePlay>  with TickerProviderStateMixin {
                       },
                       textLeft: 'A:',
                       buttonColor: getAnswerButtonColor(0),
-                    ),
+                    ): Container(height: 50.0,),
                     Padding(padding: EdgeInsets.only(bottom: (20.0 / 853) * MediaQuery.of(context).size.height),),
+                    (answersVisible[1])?
                     ButtonQuiz(
                       current_question.answers[1].description,
                           () async {
@@ -416,8 +452,9 @@ class _GamePlayState extends State<GamePlay>  with TickerProviderStateMixin {
                       },
                       textLeft: 'B:',
                       buttonColor: getAnswerButtonColor(1),
-                    ),
+                    ): Container(height: 50.0,),
                     Padding(padding: EdgeInsets.only(bottom: 20.0),),
+                    (answersVisible[2])?
                     ButtonQuiz(
                       current_question.answers[2].description,
                           () async{
@@ -431,8 +468,9 @@ class _GamePlayState extends State<GamePlay>  with TickerProviderStateMixin {
                       },
                       textLeft: 'C:',
                       buttonColor: getAnswerButtonColor(2),
-                    ),
+                    ): Container(height: 50.0,),
                     Padding(padding: EdgeInsets.only(bottom: 20.0),),
+                    (answersVisible[3])?
                     ButtonQuiz(
                       current_question.answers[3].description,
                           () async {
@@ -446,7 +484,7 @@ class _GamePlayState extends State<GamePlay>  with TickerProviderStateMixin {
                       },
                       textLeft: 'D:',
                       buttonColor: getAnswerButtonColor(3),
-                    )
+                    ): Container(height: 50.0,)
                   ],
                 )
               ],
@@ -538,6 +576,7 @@ class _GamePlayState extends State<GamePlay>  with TickerProviderStateMixin {
       checkingAnswerFinished = false;
       selectedAnswerIndex = -1;
     });
+    initAnswersVisibility();
       //load another question
       if(answer.is_valid_answer && controller.value > 0) {
         currentMoney = moneyManagement.stepUp();
@@ -590,6 +629,42 @@ class _GamePlayState extends State<GamePlay>  with TickerProviderStateMixin {
         Navigator.pop(context);
       }
     });
+  }
+
+  void initAnswersVisibility() {
+    for (int i=0; i<answersVisible.length; i++) {
+      setState(() {
+        answersVisible[i] = true;
+      });
+    }
+  }
+
+  void hideTwoAnswers() {
+    //generate random value of answer that will not be hide
+    int max = 2;
+    int min = 0;
+    Random rnd = new Random();
+
+    //array of all index that can be checked, index of good answer will be removed from this array
+    List<int> indexes = [0, 1, 2, 3];
+
+    //remove correct answer index from the list
+    for ( int j=0; j<current_question.answers.length; j++) {
+      if (current_question.answers[j].is_valid_answer) {
+        indexes.removeAt(j);
+        break;
+      }
+    }
+
+    int indexAnswerVisible = min + rnd.nextInt(max - min + 1);
+    indexAnswerVisible = indexes[indexAnswerVisible];
+    for (int i=0; i<answersVisible.length; i++) {
+      if (!current_question.answers[i].is_valid_answer && i != indexAnswerVisible) {
+        setState(() {
+          answersVisible[i] = false;
+        });
+      }
+    }
   }
 
   Future showTransition({finish: false, start: 0, end: 0, jackpot: true, reverse: false}) async {
