@@ -3,6 +3,7 @@ import 'package:millionaire_quiz/components/button_circle.dart';
 import 'package:millionaire_quiz/components/button_quiz.dart';
 import 'package:millionaire_quiz/components/dialog_latest_results.dart';
 import 'package:millionaire_quiz/components/quiz_page.dart';
+import 'package:millionaire_quiz/screens/about/about.dart';
 import 'package:millionaire_quiz/screens/game_play/game_play.dart';
 import 'package:audioplayers/audio_cache.dart';
 import 'package:audioplayers/audioplayers.dart';
@@ -132,7 +133,9 @@ class _HomePageState extends State<HomePage>  with WidgetsBindingObserver {
                     ButtonQuiz(
                       'About',
                       () {
-
+                        Navigator.push(context, MaterialPageRoute(builder: (_context) {
+                          return About();
+                        }));
                         },
                       textAlign: TextAlign.center,
                     ),

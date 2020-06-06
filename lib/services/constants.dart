@@ -9,6 +9,11 @@ const ADMOB_BANNER_ID = 'ca-app-pub-3940256099942544/6300978111';
 const ADMOB_INTERSTITIAL_ID = 'ca-app-pub-3940256099942544/1033173712';
 const ADMOB_REWARD_ID = 'ca-app-pub-3940256099942544/5224354917';
 
+const APP_NAME = 'Millionaire Quiz';
+const APP_VERSION = '1.0';
+const APP_DATE = 'JUNE 2019';
+const APP_COMPANY_NAME = 'Lyabs Media';
+
 class AppPages {
   static int PAGE_HOME = 1;
   static int PAGE_GAMEPLAY = 2;
