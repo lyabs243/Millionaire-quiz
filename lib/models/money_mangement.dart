@@ -45,8 +45,8 @@ class MoneyManagement {
     }
     else if(value >= 1000) {
       result = (value / 1000).toString() + 'K';
-      result = result.replaceAll('.0', '');
     }
+    result = result.replaceAll('.0', '');
     return result;
   }
 }
