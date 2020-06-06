@@ -3,6 +3,9 @@ import 'package:millionaire_quiz/components/button_circle.dart';
 import 'package:millionaire_quiz/components/button_quiz.dart';
 import 'package:millionaire_quiz/components/quiz_page.dart';
 import 'package:millionaire_quiz/screens/game_play/game_play.dart';
+import 'package:audioplayers/audio_cache.dart';
+import 'package:audioplayers/audioplayers.dart';
+import 'package:millionaire_quiz/services/constants.dart';
 
 class HomePage extends StatefulWidget {
 
@@ -14,9 +17,45 @@ class HomePage extends StatefulWidget {
   }
 }
 
-class _HomePageState extends State<HomePage> {
+class _HomePageState extends State<HomePage>  with WidgetsBindingObserver {
 
-   Widget build(BuildContext context) {
+  AudioCache audioPlayer;
+  AudioPlayer player;
+
+  @override
+  initState() {
+    super.initState();
+    WidgetsBinding.instance.addObserver(this);
+    audioPlayer = AudioCache();
+    playMainSong();
+    AppPages.CURRENT_PAGE = AppPages.PAGE_HOME;
+  }
+
+  @override
+  void dispose() {
+    super.dispose();
+    WidgetsBinding.instance.removeObserver(this);
+    player.dispose();
+  }
+
+  @override
+  void didChangeAppLifecycleState(AppLifecycleState state) {
+    if (AppPages.CURRENT_PAGE == AppPages.PAGE_HOME) {
+      if (state == AppLifecycleState.paused) {
+        player.pause();
+      }
+      else if (state == AppLifecycleState.resumed) {
+        player.resume();
+      }
+    }
+  }
+
+  playMainSong() async {
+    player = await audioPlayer.loop('audio/main_theme.mp3');
+  }
+
+
+  Widget build(BuildContext context) {
     return Scaffold(
           body: Container(
             width: MediaQuery.of(context).size.width,
@@ -64,11 +103,15 @@ class _HomePageState extends State<HomePage> {
                     ButtonQuiz(
                       'Play',
                       () {
+                        player.pause();
                         Navigator.push(context, MaterialPageRoute(
                             builder: (_context){
                               return GamePlay();
                             }
-                        ));
+                        )).then((value) {
+                          player.resume();
+                          AppPages.CURRENT_PAGE = AppPages.PAGE_HOME;
+                        });
                       },
                       textAlign: TextAlign.center,
                     ),
