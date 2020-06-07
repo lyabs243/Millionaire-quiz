@@ -151,7 +151,7 @@ class _GamePlayState extends State<GamePlay>  with TickerProviderStateMixin, Wid
     );
     controller.addStatusListener((status) {
       if(status == AnimationStatus.dismissed) {
-        finishGame();
+        wrongAnswer();
       }
     });
     audioPlayer = AudioCache();
@@ -640,19 +640,23 @@ class _GamePlayState extends State<GamePlay>  with TickerProviderStateMixin, Wid
         }
       }
       else {
-        int stepBefore = moneyManagement.currentStep-1;
-        setState(() {
-          currentMoney = moneyManagement.playerFail(level);
-        });
-        int stepAfter = moneyManagement.currentStep;
-        //show transition of losing money when failing question
-        if(stepBefore > 1) {
-          showTransition(start: stepBefore, end: stepAfter, finish: true, jackpot: false, reverse: true);
-        }
-        else {
-          finishGame();
-        }
+        wrongAnswer();
       }
+  }
+
+  void wrongAnswer () {
+    int stepBefore = moneyManagement.currentStep-1;
+    setState(() {
+      currentMoney = moneyManagement.playerFail(level);
+    });
+    int stepAfter = moneyManagement.currentStep;
+    //show transition of losing money when failing question
+    if(stepBefore > 1) {
+      showTransition(start: stepBefore, end: stepAfter, finish: true, jackpot: false, reverse: true);
+    }
+    else {
+      finishGame();
+    }
   }
 
   finishGame({jackpot: false}) async {
