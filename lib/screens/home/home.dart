@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:millionaire_quiz/components/button_circle.dart';
 import 'package:millionaire_quiz/components/button_quiz.dart';
 import 'package:millionaire_quiz/components/dialog_latest_results.dart';
+import 'package:millionaire_quiz/components/dialog_settings.dart';
 import 'package:millionaire_quiz/components/quiz_page.dart';
 import 'package:millionaire_quiz/screens/about/about.dart';
 import 'package:millionaire_quiz/screens/game_play/game_play.dart';
@@ -59,90 +60,104 @@ class _HomePageState extends State<HomePage>  with WidgetsBindingObserver {
 
   Widget build(BuildContext context) {
     return Scaffold(
-          body: Container(
-            width: MediaQuery.of(context).size.width,
-            height: MediaQuery.of(context).size.height,
-            decoration: QuizPage.quizDecoration(),
-            child: Column(
-              children: <Widget>[
-                Padding(padding: EdgeInsets.only(top: 40.0),),
-                Row(
-                  mainAxisAlignment: MainAxisAlignment.end,
+          body: SingleChildScrollView(
+            child: Container(
+                width: MediaQuery.of(context).size.width,
+                height: MediaQuery.of(context).size.height,
+                decoration: QuizPage.quizDecoration(),
+                child: Column(
                   children: <Widget>[
-                    ButtonCircle(
-                        Icon(
-                          Icons.share,
-                          size: 25.0,
-                          color: Colors.white,
-                        ),
-                        () {
+                    Padding(padding: EdgeInsets.only(top: 40.0),),
+                    Row(
+                      mainAxisAlignment: MainAxisAlignment.end,
+                      children: <Widget>[
+                        ButtonCircle(
+                            Icon(
+                              Icons.share,
+                              size: 25.0,
+                              color: Colors.white,
+                            ),
+                                () {
 
-                        }
+                            }
+                        ),
+                        ButtonCircle(
+                            Icon(
+                              Icons.star,
+                              size: 25.0,
+                              color: Colors.white,
+                            ),
+                                () {
+
+                            }
+                        )
+                      ],
                     ),
-                    ButtonCircle(
-                        Icon(
-                          Icons.star,
-                          size: 25.0,
-                          color: Colors.white,
+                    Container(
+                      width: MediaQuery.of(context).size.width / 2,
+                      height: MediaQuery.of(context).size.width / 2,
+                      child: Image.asset(
+                          'assets/logo.png'
+                      ),
+                    ),
+                    Padding(padding: EdgeInsets.only(bottom: 40.0),),
+                    Column(
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      children: <Widget>[
+                        ButtonQuiz(
+                          'Play',
+                              () {
+                            player.pause();
+                            Navigator.push(context, MaterialPageRoute(
+                                builder: (_context){
+                                  return GamePlay();
+                                }
+                            )).then((value) {
+                              player.resume();
+                              AppPages.CURRENT_PAGE = AppPages.PAGE_HOME;
+                            });
+                          },
+                          textAlign: TextAlign.center,
                         ),
-                        () {
-
-                        }
+                        Padding(padding: EdgeInsets.only(bottom: 20.0),),
+                        ButtonQuiz(
+                          'Score',
+                              () {
+                            showDialog(
+                              context: context,
+                              barrierDismissible: false,
+                              builder: (BuildContext context) => DialogLatestResults(),
+                            );
+                          },
+                          textAlign: TextAlign.center,
+                        ),
+                        Padding(padding: EdgeInsets.only(bottom: 20.0),),
+                        ButtonQuiz(
+                          'About',
+                              () {
+                            Navigator.push(context, MaterialPageRoute(builder: (_context) {
+                              return About();
+                            }));
+                          },
+                          textAlign: TextAlign.center,
+                        ),
+                        Padding(padding: EdgeInsets.only(bottom: 20.0),),
+                        ButtonQuiz(
+                          'Settings',
+                              () {
+                            showDialog(
+                              context: context,
+                              barrierDismissible: false,
+                              builder: (BuildContext context) => DialogSettings(),
+                            );
+                          },
+                          textAlign: TextAlign.center,
+                        )
+                      ],
                     )
                   ],
-                ),
-                Container(
-                  width: MediaQuery.of(context).size.width / 2,
-                  height: MediaQuery.of(context).size.width / 2,
-                  child: Image.asset(
-                    'assets/logo.png'
-                  ),
-                ),
-                Padding(padding: EdgeInsets.only(bottom: 40.0),),
-                Column(
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                  children: <Widget>[
-                    ButtonQuiz(
-                      'Play',
-                      () {
-                        player.pause();
-                        Navigator.push(context, MaterialPageRoute(
-                            builder: (_context){
-                              return GamePlay();
-                            }
-                        )).then((value) {
-                          player.resume();
-                          AppPages.CURRENT_PAGE = AppPages.PAGE_HOME;
-                        });
-                      },
-                      textAlign: TextAlign.center,
-                    ),
-                    Padding(padding: EdgeInsets.only(bottom: 20.0),),
-                    ButtonQuiz(
-                      'Score',
-                      () {
-                        showDialog(
-                          context: context,
-                          barrierDismissible: false,
-                          builder: (BuildContext context) => DialogLatestResults(),
-                        );
-                        },
-                      textAlign: TextAlign.center,
-                    ),
-                    Padding(padding: EdgeInsets.only(bottom: 20.0),),
-                    ButtonQuiz(
-                      'About',
-                      () {
-                        Navigator.push(context, MaterialPageRoute(builder: (_context) {
-                          return About();
-                        }));
-                        },
-                      textAlign: TextAlign.center,
-                    ),
-                  ],
                 )
-              ],
-            )
+            ),
           ),
         );
   }
