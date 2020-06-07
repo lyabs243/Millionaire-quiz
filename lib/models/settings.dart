@@ -4,6 +4,16 @@ import 'dart:convert';
 class Settings {
 
   bool audioEnable = true;
+  static Settings settingsInstance;
+
+  //get static instance of settings
+  //so you don't have to read the sharepreferences all the time.
+  static Future<Settings> getInstance() async {
+    if(settingsInstance == null) {
+      settingsInstance = await Settings.getSettings();
+    }
+    return settingsInstance;
+  }
 
   static Future<Settings> getSettings() async {
     Settings result = Settings();

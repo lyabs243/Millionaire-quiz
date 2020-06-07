@@ -8,6 +8,7 @@ import 'package:millionaire_quiz/components/quiz_page.dart';
 import 'package:millionaire_quiz/models/answer.dart';
 import 'package:millionaire_quiz/models/question.dart';
 import 'package:millionaire_quiz/models/score.dart';
+import 'package:millionaire_quiz/models/settings.dart';
 import 'package:millionaire_quiz/screens/game_play/components/dialog_ask_audience.dart';
 import 'package:millionaire_quiz/screens/game_play/components/dialog_get_money.dart';
 import 'package:millionaire_quiz/services/constants.dart';
@@ -49,6 +50,7 @@ class _GamePlayState extends State<GamePlay>  with TickerProviderStateMixin, Wid
 
   AudioCache audioPlayer;
   AudioPlayer player;
+  Settings _settings;
 
   bool is_loading = true, isAnswerAClicked = false, isAnswerBClicked = false, isAnswerCClicked = false,
       isAnswerDClicked = false, canShowDialog = false, canShowTransition = false;
@@ -71,6 +73,11 @@ class _GamePlayState extends State<GamePlay>  with TickerProviderStateMixin, Wid
   void initState() {
     super.initState();
     AppPages.CURRENT_PAGE = AppPages.PAGE_GAMEPLAY;
+    Settings.getInstance().then((value) {
+      setState(() {
+        _settings = value;
+      });
+    });
     if(constants.SHOW_ADMOB) {
       interstitialAd = AdmobInterstitial(
         adUnitId: constants.ADMOB_INTERSTITIAL_ID,
@@ -155,19 +162,25 @@ class _GamePlayState extends State<GamePlay>  with TickerProviderStateMixin, Wid
   void dispose() {
     super.dispose();
     WidgetsBinding.instance.removeObserver(this);
-    player.dispose();
+    if(player != null) {
+      player.dispose();
+    }
   }
 
   @override
   void didChangeAppLifecycleState(AppLifecycleState state) {
     if (state == AppLifecycleState.paused) {
-      player.stop();
+      if(player != null) {
+        player.stop();
+      }
     }
   }
 
   play() async {
     //play audio start
-    player = await audioPlayer.play('audio/lets_play.mp3');
+    if(_settings != null && _settings.audioEnable) {
+      player = await audioPlayer.play('audio/lets_play.mp3');
+    }
 
     level = 0;
     moneyManagement.currentStep = 0;
@@ -644,8 +657,12 @@ class _GamePlayState extends State<GamePlay>  with TickerProviderStateMixin, Wid
 
   finishGame({jackpot: false}) async {
     if (jackpot) {
-      player.stop();
-      player = await audioPlayer.play('audio/jackpot.mp3');
+      if ((_settings != null && _settings.audioEnable)) {
+        if (player != null) {
+          player.stop();
+        }
+        player = await audioPlayer.play('audio/jackpot.mp3');
+      }
     }
     showDialog(
       context: context,
@@ -702,14 +719,22 @@ class _GamePlayState extends State<GamePlay>  with TickerProviderStateMixin, Wid
   Future showTransition({finish: false, start: 0, end: 0, jackpot: true, reverse: false}) async {
     int from, to;
     if(reverse) {
-      player.stop();
-      player = await audioPlayer.play('audio/wrong_answer.mp3');
+      if ((_settings != null && _settings.audioEnable)) {
+        if (player != null) {
+          player.stop();
+        }
+        player = await audioPlayer.play('audio/wrong_answer.mp3');
+      }
       from = start;
       to = end;
     }
     else {
-      player.stop();
-      player = await audioPlayer.play('audio/correct_answer.mp3');
+      if ((_settings != null && _settings.audioEnable)) {
+        if (player != null) {
+          player.stop();
+        }
+        player = await audioPlayer.play('audio/correct_answer.mp3');
+      }
       from = moneyManagement.currentStep - 2;
       to = moneyManagement.currentStep - 1;
     }

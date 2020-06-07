@@ -4,6 +4,7 @@ import 'package:millionaire_quiz/components/button_quiz.dart';
 import 'package:millionaire_quiz/components/dialog_latest_results.dart';
 import 'package:millionaire_quiz/components/dialog_settings.dart';
 import 'package:millionaire_quiz/components/quiz_page.dart';
+import 'package:millionaire_quiz/models/settings.dart';
 import 'package:millionaire_quiz/screens/about/about.dart';
 import 'package:millionaire_quiz/screens/game_play/game_play.dart';
 import 'package:audioplayers/audio_cache.dart';
@@ -24,13 +25,21 @@ class _HomePageState extends State<HomePage>  with WidgetsBindingObserver {
 
   AudioCache audioPlayer;
   AudioPlayer player;
+  Settings _settings;
 
   @override
   initState() {
     super.initState();
     WidgetsBinding.instance.addObserver(this);
+    Settings.getInstance().then((value) {
+      setState(() {
+        _settings = value;
+        if(_settings.audioEnable) {
+          playMainSong();
+        }
+      });
+    });
     audioPlayer = AudioCache();
-    playMainSong();
     AppPages.CURRENT_PAGE = AppPages.PAGE_HOME;
   }
 
@@ -38,16 +47,18 @@ class _HomePageState extends State<HomePage>  with WidgetsBindingObserver {
   void dispose() {
     super.dispose();
     WidgetsBinding.instance.removeObserver(this);
-    player.dispose();
+    if(player != null) {
+      player.dispose();
+    }
   }
 
   @override
   void didChangeAppLifecycleState(AppLifecycleState state) {
     if (AppPages.CURRENT_PAGE == AppPages.PAGE_HOME) {
-      if (state == AppLifecycleState.paused) {
+      if (state == AppLifecycleState.paused && player != null) {
         player.pause();
       }
-      else if (state == AppLifecycleState.resumed) {
+      else if (state == AppLifecycleState.resumed && player != null && (_settings != null && _settings.audioEnable)) {
         player.resume();
       }
     }
@@ -107,13 +118,17 @@ class _HomePageState extends State<HomePage>  with WidgetsBindingObserver {
                         ButtonQuiz(
                           'Play',
                               () {
-                            player.pause();
+                            if(player != null) {
+                              player.pause();
+                            }
                             Navigator.push(context, MaterialPageRoute(
                                 builder: (_context){
                                   return GamePlay();
                                 }
                             )).then((value) {
-                              player.resume();
+                              if(player != null && (_settings != null && _settings.audioEnable)) {
+                                player.resume();
+                              }
                               AppPages.CURRENT_PAGE = AppPages.PAGE_HOME;
                             });
                           },
@@ -149,7 +164,22 @@ class _HomePageState extends State<HomePage>  with WidgetsBindingObserver {
                               context: context,
                               barrierDismissible: false,
                               builder: (BuildContext context) => DialogSettings(),
-                            );
+                            ).then((value) {
+                              Settings.settingsInstance = value;
+                              setState(() {
+                                if(_settings.audioEnable != value.audioEnable) {
+                                  if(value.audioEnable) {
+                                    playMainSong();
+                                  }
+                                  else {
+                                    if(player != null) {
+                                      player.stop();
+                                    }
+                                  }
+                                }
+                                _settings = value;
+                              });
+                            });
                           },
                           textAlign: TextAlign.center,
                         )
