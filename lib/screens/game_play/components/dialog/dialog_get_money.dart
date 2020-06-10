@@ -1,47 +1,31 @@
 import 'package:flutter/material.dart';
-import 'package:millionaire_quiz/models/question.dart';
-import '../../../models/money_mangement.dart';
-import '../../../services/constants.dart' as constants;
+import '../../../../models/money_mangement.dart';
+import '../../../../services/constants.dart' as constants;
 import 'package:admob_flutter/admob_flutter.dart';
 
-class DialogCallFriend extends StatelessWidget {
+class DialogGetMoney extends StatelessWidget {
 
-  Question question;
+  int earningValue = 0;
+  String eaningValueDescription = '0';
   AdmobBanner admobBanner;
-  String correctAnswer, answer;
 
-  DialogCallFriend(this.question) {
-    int index = 0;
-    question.answers.forEach((element) {
-      if(element.is_valid_answer) {
-        answer = element.description;
-        if(index == 0) {
-          correctAnswer = 'A';
-        }
-        else if(index == 1) {
-          correctAnswer = 'B';
-        }
-        else if(index == 2) {
-          correctAnswer = 'C';
-        }
-        else {
-          correctAnswer = 'D';
-        }
-      }
-      index++;
-    });
+  DialogGetMoney(this.earningValue) {
+    if(earningValue > 0) {
+      eaningValueDescription =
+          MoneyManagement.jackpotsText[MoneyManagement.jackpots.indexOf(
+              this.earningValue)].trim();
+    }
   }
 
 
   @override
   Widget build(BuildContext context) {
-    if(constants.SHOW_ADMOB) {
-      admobBanner = AdmobBanner(
-        adUnitId: constants.ADMOB_BANNER_ID,
-        adSize: AdmobBannerSize.LARGE_BANNER,
-        listener: (AdmobAdEvent event, Map<String, dynamic> args) {},
-      );
-    }
+    admobBanner = AdmobBanner(
+      adUnitId: constants.ADMOB_BANNER_ID,
+      adSize: AdmobBannerSize.LARGE_BANNER,
+      listener: (AdmobAdEvent event, Map<String, dynamic> args) {
+      },
+    );
     return Dialog(
       shape: RoundedRectangleBorder(
         borderRadius: BorderRadius.circular(Consts.padding),
@@ -80,28 +64,17 @@ class DialogCallFriend extends StatelessWidget {
           child: Column(
             mainAxisSize: MainAxisSize.min, // To make the card compact
             children: <Widget>[
-              (constants.SHOW_ADMOB)?
               Container(
                 child: admobBanner,
-              ): Container(),
+              ),
               SizedBox(height: (16.0 / 853) * MediaQuery.of(context).size.height),
-              RichText(
+              Text(
+                'You wins \$ $eaningValueDescription, Do you wants to get money? ',
                 textAlign: TextAlign.center,
-                text: new TextSpan(
-                  children: [
-                    new TextSpan(
-                      text: 'Your friend said the correct answer is ',
-                      style: new TextStyle(color: Colors.white, fontSize: (28.0 / 853) * MediaQuery.of(context).size.height),
-                    ),
-                    new TextSpan(
-                      text: '$correctAnswer: ',
-                      style: new TextStyle(color: Colors.yellow,fontSize: (32.0 / 853) * MediaQuery.of(context).size.height),
-                    ),
-                    new TextSpan(
-                      text: '$answer ',
-                      style: new TextStyle(color: Colors.yellow,fontSize: (20.0 / 853) * MediaQuery.of(context).size.height),
-                    ),
-                  ],
+                textScaleFactor: 1.2,
+                style: TextStyle(
+                  fontSize: (16.0 / 853) * MediaQuery.of(context).size.height,
+                  color: Colors.white
                 ),
               ),
               SizedBox(height: (24.0 / 853) * MediaQuery.of(context).size.height),
@@ -115,12 +88,23 @@ class DialogCallFriend extends StatelessWidget {
                         Navigator.of(context).pop(true); // To close the dialog
                       },
                       child: Text(
-                        'Continue',
+                        'Get money',
                         style: TextStyle(
                             color: Theme.of(context).primaryColor
                         ),
                       ),
                     ),
+                    FlatButton(
+                      onPressed: () {
+                        Navigator.of(context).pop(false); // To close the dialog
+                      },
+                      child: Text(
+                        'Continue playing',
+                        style: TextStyle(
+                            color: Theme.of(context).primaryColor
+                        ),
+                      ),
+                    )
                   ],
                 ),
               ),
@@ -133,10 +117,13 @@ class DialogCallFriend extends StatelessWidget {
           child: Container(
             child: CircleAvatar(
               backgroundColor: Theme.of(context).primaryColor,
-              child: Icon(
-                Icons.call,
-                size: (80.0 / 853) * MediaQuery.of(context).size.height,
-                color: Colors.white,
+              child: Text(
+                '${MoneyManagement.moneyDescriptionReduce(earningValue)}',
+                textScaleFactor: 2.5,
+                style: TextStyle(
+                  color: Colors.yellow,
+                  fontWeight: FontWeight.bold
+                ),
               ),
               radius: Consts.avatarRadius,
             ),

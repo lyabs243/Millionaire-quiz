@@ -3,7 +3,7 @@
  */
 
 import 'package:flutter/material.dart';
-import '../../../models/money_mangement.dart';
+import '../../../../models/money_mangement.dart';
 
 class DialogStepTransition extends StatefulWidget {
 

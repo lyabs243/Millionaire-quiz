@@ -2,8 +2,8 @@ import 'dart:math';
 
 import 'package:flutter/material.dart';
 import 'package:millionaire_quiz/models/question.dart';
-import '../../../models/money_mangement.dart';
-import '../../../services/constants.dart' as constants;
+import '../../../../models/money_mangement.dart';
+import '../../../../services/constants.dart' as constants;
 import 'package:admob_flutter/admob_flutter.dart';
 
 class DialogAskAudience extends StatelessWidget {
