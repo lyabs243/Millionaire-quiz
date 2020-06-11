@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:millionaire_quiz/components/button_quiz.dart';
+import 'package:millionaire_quiz/services/localizations.dart';
 
 class LoadFailed extends StatelessWidget {
 
@@ -24,7 +25,7 @@ class LoadFailed extends StatelessWidget {
             Padding(padding: EdgeInsets.only(bottom: MediaQuery.of(context).size.height / 6),),
             Container(
               child: Text(
-                'Failed to load questions, please check your internet connection ans try again',
+                MyLocalizations.of(context).localization['failed_load_question'],
                 textScaleFactor: 1.8,
                 textAlign: TextAlign.center,
                 style: TextStyle(
@@ -34,7 +35,7 @@ class LoadFailed extends StatelessWidget {
             ),
             Padding(padding: EdgeInsets.only(bottom: 10.0),),
             ButtonQuiz(
-              'Try again',
+              MyLocalizations.of(context).localization['try_again'],
               this.tryAgain,
               textAlign: TextAlign.center,
             )

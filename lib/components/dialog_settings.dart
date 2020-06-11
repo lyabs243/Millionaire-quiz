@@ -3,6 +3,7 @@
  */
 
 import 'package:flutter/material.dart';
+import 'package:millionaire_quiz/services/localizations.dart';
 import '../models/settings.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 
@@ -75,7 +76,7 @@ class _DialogSettingsState extends State<DialogSettings> {
                 children: [
                   SizedBox(height: (16.0 / 853) * MediaQuery.of(context).size.height),
                   Text(
-                    'Settings',
+                    MyLocalizations.of(context).localization['settings'],
                     textAlign: TextAlign.center,
                     textScaleFactor: 2.2,
                     style: TextStyle(
@@ -90,7 +91,7 @@ class _DialogSettingsState extends State<DialogSettings> {
                       children: <Widget>[
                         Container(
                           child: Text(
-                            'Audio',
+                            MyLocalizations.of(context).localization['audio'],
                             textScaleFactor: 1.4,
                             style: TextStyle(
                               color: Colors.white
@@ -121,7 +122,7 @@ class _DialogSettingsState extends State<DialogSettings> {
                             Navigator.of(context).pop(settings);
                           },
                           child: Text(
-                            'Cancel',
+                            MyLocalizations.of(context).localization['cancel'],
                             style: TextStyle(
                                 color: Theme.of(context).primaryColor
                             ),
@@ -132,7 +133,7 @@ class _DialogSettingsState extends State<DialogSettings> {
                             settings.audioEnable = audioEnable;
                             Settings.setSettings(settings).then((value) {
                               Fluttertoast.showToast(
-                                  msg: "Settings updated",
+                                  msg: MyLocalizations.of(context).localization['settings_updated'],
                                   toastLength: Toast.LENGTH_SHORT,
                                   gravity: ToastGravity.BOTTOM,
                                   timeInSecForIosWeb: 1,
@@ -144,7 +145,7 @@ class _DialogSettingsState extends State<DialogSettings> {
                             });
                           },
                           child: Text(
-                            'Save',
+                            MyLocalizations.of(context).localization['save'],
                             style: TextStyle(
                                 color: Theme.of(context).primaryColor
                             ),

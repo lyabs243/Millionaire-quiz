@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:millionaire_quiz/services/localizations.dart';
 import '../../../../models/money_mangement.dart';
 import 'package:admob_flutter/admob_flutter.dart';
 import '../../../../services/constants.dart' as constants;
@@ -86,8 +87,8 @@ class DialogGameFinished extends StatelessWidget {
             mainAxisSize: MainAxisSize.min, // To make the card compact
             children: <Widget>[
               Text(
-                (jackpot)? 'Jackpot'
-                : 'Game Over',
+                (jackpot)? MyLocalizations.of(context).localization['jackpot']
+                : MyLocalizations.of(context).localization['game_over'],
                 style: TextStyle(
                   fontSize: (24.0 / 853) * MediaQuery.of(context).size.height,
                   fontWeight: FontWeight.w700,
@@ -108,8 +109,10 @@ class DialogGameFinished extends StatelessWidget {
               ),
               SizedBox(height: (16.0 / 853) * MediaQuery.of(context).size.height),
               Text(
-                (jackpot)? 'Congratulation You ara new millionaire! Get your check of \$ $eaningValueDescription !'
-                : 'You are not millionaire... Your earn \$ $eaningValueDescription !',
+                (jackpot)? '${MyLocalizations.of(context).localization['congratulation_you_millionaire']}!'
+                    ' ${MyLocalizations.of(context).localization['get_your_check_of']} \$ $eaningValueDescription !'
+                : '${MyLocalizations.of(context).localization['you_not_millionaire']}... '
+                    '${MyLocalizations.of(context).localization['you_earn']} \$ $eaningValueDescription !',
                 textAlign: TextAlign.center,
                 textScaleFactor: 1.2,
                 style: TextStyle(
@@ -134,7 +137,7 @@ class DialogGameFinished extends StatelessWidget {
                         }
                       },
                       child: Text(
-                        'Go Home',
+                        MyLocalizations.of(context).localization['go_home'],
                         style: TextStyle(
                             color: Theme.of(context).primaryColor
                         ),
@@ -151,7 +154,7 @@ class DialogGameFinished extends StatelessWidget {
                         }
                       },
                       child: Text(
-                        'Play Again',
+                        MyLocalizations.of(context).localization['play_again'],
                         style: TextStyle(
                             color: Theme.of(context).primaryColor
                         ),

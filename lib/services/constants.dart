@@ -14,7 +14,11 @@ const APP_VERSION = '1.0';
 const APP_DATE = 'JUNE 2019';
 const APP_COMPANY_NAME = 'Lyabs Media';
 
-const QUESTION_FROM_OPEN_TRIVIA_DB = true;
+const LANG_CODE = 'en';
+
+List<String> languages = ['en', 'fr'];
+
+const QUESTION_FROM_OPEN_TRIVIA_DB = false;
 
 class AppPages {
   static int PAGE_HOME = 1;

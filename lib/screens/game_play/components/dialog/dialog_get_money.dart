@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:millionaire_quiz/services/localizations.dart';
 import '../../../../models/money_mangement.dart';
 import '../../../../services/constants.dart' as constants;
 import 'package:admob_flutter/admob_flutter.dart';
@@ -69,7 +70,8 @@ class DialogGetMoney extends StatelessWidget {
               ),
               SizedBox(height: (16.0 / 853) * MediaQuery.of(context).size.height),
               Text(
-                'You wins \$ $eaningValueDescription, Do you wants to get money? ',
+                '${MyLocalizations.of(context).localization['you_wins']} \$ $eaningValueDescription,'
+                    ' ${MyLocalizations.of(context).localization['want_get_moneu']} ',
                 textAlign: TextAlign.center,
                 textScaleFactor: 1.2,
                 style: TextStyle(
@@ -88,7 +90,7 @@ class DialogGetMoney extends StatelessWidget {
                         Navigator.of(context).pop(true); // To close the dialog
                       },
                       child: Text(
-                        'Get money',
+                        MyLocalizations.of(context).localization['get_money'],
                         style: TextStyle(
                             color: Theme.of(context).primaryColor
                         ),
@@ -99,7 +101,7 @@ class DialogGetMoney extends StatelessWidget {
                         Navigator.of(context).pop(false); // To close the dialog
                       },
                       child: Text(
-                        'Continue playing',
+                        MyLocalizations.of(context).localization['continue_playing'],
                         style: TextStyle(
                             color: Theme.of(context).primaryColor
                         ),

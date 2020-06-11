@@ -2,6 +2,7 @@ import 'dart:math';
 
 import 'package:flutter/material.dart';
 import 'package:millionaire_quiz/models/question.dart';
+import 'package:millionaire_quiz/services/localizations.dart';
 import '../../../../models/money_mangement.dart';
 import '../../../../services/constants.dart' as constants;
 import 'package:admob_flutter/admob_flutter.dart';
@@ -97,7 +98,7 @@ class DialogAskAudience extends StatelessWidget {
                 text: new TextSpan(
                   children: [
                     new TextSpan(
-                      text: 'Audience result:  ',
+                      text: '${MyLocalizations.of(context).localization['audience_result']}:  ',
                       style: new TextStyle(color: Colors.white, fontSize: (28.0 / 853) * MediaQuery.of(context).size.height),
                     ),
                   ],
@@ -199,7 +200,7 @@ class DialogAskAudience extends StatelessWidget {
                         Navigator.of(context).pop(true); // To close the dialog
                       },
                       child: Text(
-                        'Continue',
+                        MyLocalizations.of(context).localization['continue'],
                         style: TextStyle(
                             color: Theme.of(context).primaryColor
                         ),

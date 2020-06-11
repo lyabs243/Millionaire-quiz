@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:millionaire_quiz/services/localizations.dart';
 
 class LayoutLoad extends StatelessWidget {
 
@@ -16,7 +17,7 @@ class LayoutLoad extends StatelessWidget {
             Padding(padding: EdgeInsets.only(bottom: 10.0),),
             Container(
               child: Text(
-                'Please wait...',
+                MyLocalizations.of(context).localization['please_wait'],
                 textScaleFactor: 2.0,
                 style: TextStyle(
                     color: Colors.white

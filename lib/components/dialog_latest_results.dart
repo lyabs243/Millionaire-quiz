@@ -5,6 +5,7 @@
 import 'package:flutter/material.dart';
 import 'package:millionaire_quiz/models/money_mangement.dart';
 import 'package:millionaire_quiz/models/score.dart';
+import 'package:millionaire_quiz/services/localizations.dart';
 
 class DialogLatestResults extends StatefulWidget {
   
@@ -85,7 +86,7 @@ class _DialogLatestResultsState extends State<DialogLatestResults> {
 
     widgets.add(SizedBox(height: (16.0 / 853) * MediaQuery.of(context).size.height));
     widgets.add(Text(
-      'Latest results  ',
+      MyLocalizations.of(context).localization['latest_results'],
       textAlign: TextAlign.center,
       textScaleFactor: 2.2,
       style: TextStyle(
@@ -126,7 +127,7 @@ class _DialogLatestResultsState extends State<DialogLatestResults> {
                   Navigator.of(context).pop(); // To close the dialog
                 },
                 child: Text(
-                  'Close',
+                  MyLocalizations.of(context).localization['close'],
                   style: TextStyle(
                       color: Theme.of(context).primaryColor
                   ),

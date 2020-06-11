@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:millionaire_quiz/components/button_circle.dart';
+import 'package:millionaire_quiz/services/localizations.dart';
 
 class GamePlayHeader extends StatelessWidget {
 
@@ -26,7 +27,7 @@ class GamePlayHeader extends StatelessWidget {
             highlightColor: Colors.orange,
             child: SizedBox(
               child: Text(
-                'Get money',
+                MyLocalizations.of(context).localization['get_money'],
                 textAlign: TextAlign.center,
                 style: new TextStyle(color: Colors.white, fontSize: (18.0 / 853) * MediaQuery.of(context).size.height),
               ),

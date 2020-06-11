@@ -10,10 +10,9 @@ import 'package:millionaire_quiz/screens/game_play/game_play.dart';
 import 'package:audioplayers/audio_cache.dart';
 import 'package:audioplayers/audioplayers.dart';
 import 'package:millionaire_quiz/services/constants.dart';
+import 'package:millionaire_quiz/services/localizations.dart';
 
 class HomePage extends StatefulWidget {
-
-  String title = 'Millionaire quiz';
 
   @override
   _HomePageState createState() {
@@ -116,7 +115,7 @@ class _HomePageState extends State<HomePage>  with WidgetsBindingObserver {
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
                       children: <Widget>[
                         ButtonQuiz(
-                          'Play',
+                          MyLocalizations.of(context).localization['play'],
                               () {
                             if(player != null) {
                               player.pause();
@@ -136,7 +135,7 @@ class _HomePageState extends State<HomePage>  with WidgetsBindingObserver {
                         ),
                         Padding(padding: EdgeInsets.only(bottom: 20.0),),
                         ButtonQuiz(
-                          'Score',
+                          MyLocalizations.of(context).localization['score'],
                               () {
                             showDialog(
                               context: context,
@@ -148,7 +147,7 @@ class _HomePageState extends State<HomePage>  with WidgetsBindingObserver {
                         ),
                         Padding(padding: EdgeInsets.only(bottom: 20.0),),
                         ButtonQuiz(
-                          'About',
+                          MyLocalizations.of(context).localization['about'],
                               () {
                             Navigator.push(context, MaterialPageRoute(builder: (_context) {
                               return About();
@@ -158,7 +157,7 @@ class _HomePageState extends State<HomePage>  with WidgetsBindingObserver {
                         ),
                         Padding(padding: EdgeInsets.only(bottom: 20.0),),
                         ButtonQuiz(
-                          'Settings',
+                          MyLocalizations.of(context).localization['settings'],
                               () {
                             showDialog(
                               context: context,

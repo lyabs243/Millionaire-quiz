@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:millionaire_quiz/components/quiz_page.dart';
+import 'package:millionaire_quiz/services/localizations.dart';
 import '../../services/constants.dart' as constants;
 
 class About extends StatelessWidget {
@@ -18,7 +19,7 @@ class About extends StatelessWidget {
               Padding(padding: EdgeInsets.only(top: 40.0),),
               Container(
                 child: Text(
-                  'About',
+                  MyLocalizations.of(context).localization['about'],
                   textScaleFactor: 3.0,
                   style: TextStyle(
                     color: Colors.white
@@ -37,7 +38,7 @@ class About extends StatelessWidget {
               Padding(padding: EdgeInsets.only(top: 4.0, bottom: 4.0),),
               Container(
                 child: Text(
-                  'version ${constants.APP_VERSION}',
+                  '${MyLocalizations.of(context).localization['version']} ${constants.APP_VERSION}',
                   style: TextStyle(
                     color: Colors.white,
                     fontStyle: FontStyle.italic
@@ -47,7 +48,7 @@ class About extends StatelessWidget {
               Padding(padding: EdgeInsets.only(top: 50.0, bottom: 4.0),),
               Container(
                 child: Text(
-                  "${constants.APP_NAME} is a fun game in the form of multiple choice questions. The game is based on the concept of \"Who wants to be a Millionaire\". Your goal is to answer the questions correctly to reach the maximum amount of \$1,000,000 and become the new millionaire! Enjoy the game!",
+                  "${constants.APP_NAME} ${MyLocalizations.of(context).localization['about_the_app']}",
                   textAlign: TextAlign.center,
                   textScaleFactor: 1.2,
                   style: TextStyle(
