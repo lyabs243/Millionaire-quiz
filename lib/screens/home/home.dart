@@ -3,14 +3,18 @@ import 'package:millionaire_quiz/components/button_circle.dart';
 import 'package:millionaire_quiz/components/button_quiz.dart';
 import 'package:millionaire_quiz/components/dialog_latest_results.dart';
 import 'package:millionaire_quiz/components/dialog_settings.dart';
+import 'package:millionaire_quiz/components/layout_load.dart';
 import 'package:millionaire_quiz/components/quiz_page.dart';
 import 'package:millionaire_quiz/models/settings.dart';
+import 'package:millionaire_quiz/models/user.dart';
 import 'package:millionaire_quiz/screens/about/about.dart';
 import 'package:millionaire_quiz/screens/game_play/game_play.dart';
 import 'package:audioplayers/audio_cache.dart';
 import 'package:audioplayers/audioplayers.dart';
+import 'package:millionaire_quiz/screens/sign_in/sign_in_page.dart';
 import 'package:millionaire_quiz/services/constants.dart';
 import 'package:millionaire_quiz/services/localizations.dart';
+import 'package:google_sign_in/google_sign_in.dart';
 
 class HomePage extends StatefulWidget {
 
@@ -25,6 +29,9 @@ class _HomePageState extends State<HomePage>  with WidgetsBindingObserver {
   AudioCache audioPlayer;
   AudioPlayer player;
   Settings _settings;
+  bool isLoading = true;
+
+  User currentUser;
 
   @override
   initState() {
@@ -40,6 +47,12 @@ class _HomePageState extends State<HomePage>  with WidgetsBindingObserver {
     });
     audioPlayer = AudioCache();
     AppPages.CURRENT_PAGE = AppPages.PAGE_HOME;
+    User.getCurrentUser().then((_user) {
+      setState(() {
+        currentUser = _user;
+        isLoading = false;
+      });
+    });
   }
 
   @override
@@ -70,7 +83,9 @@ class _HomePageState extends State<HomePage>  with WidgetsBindingObserver {
 
   Widget build(BuildContext context) {
     return Scaffold(
-          body: SingleChildScrollView(
+          body: (isLoading)?
+              LayoutLoad():
+          SingleChildScrollView(
             child: Container(
                 width: MediaQuery.of(context).size.width,
                 height: MediaQuery.of(context).size.height,
@@ -179,6 +194,39 @@ class _HomePageState extends State<HomePage>  with WidgetsBindingObserver {
                                 _settings = value;
                               });
                             });
+                          },
+                          textAlign: TextAlign.center,
+                        ),
+                        Padding(padding: EdgeInsets.only(bottom: 20.0),),
+                        ButtonQuiz(
+                          (currentUser != null && currentUser.id.length > 0)?
+                          MyLocalizations.of(context).localization['sign_out']:
+                          MyLocalizations.of(context).localization['sign_in'],
+                          () {
+                            if (currentUser != null && currentUser.id.length > 0) { //logout
+                              GoogleSignIn _googleSignIn = GoogleSignIn(
+                                scopes: [
+                                  'email',
+                                  'https://www.googleapis.com/auth/contacts.readonly',
+                                ],
+                              );
+                              _googleSignIn.signOut();
+                              currentUser.fullName = '';
+                              currentUser.id = '';
+                              currentUser.urlProfilPic = '';
+                              User.setUser(currentUser);
+                              Navigator.of(context).pushReplacement(
+                                  MaterialPageRoute(builder: (context) {
+                                    return SignInPage();
+                                  }));
+
+                            }
+                            else {
+                              Navigator.of(context).pushReplacement(
+                                  MaterialPageRoute(builder: (context) {
+                                    return SignInPage();
+                                  }));
+                            }
                           },
                           textAlign: TextAlign.center,
                         )

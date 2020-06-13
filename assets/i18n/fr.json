@@ -29,5 +29,10 @@
   "failed_load_question": "Question non chargée, veuillez vérifier votre connexion Internet et réessayer",
   "try_again": "Réessayer",
   "version": "version",
-  "about_the_app": "est un jeu amusant sous forme de questions à choix multiples. Le jeu est basé sur le concept de \"Qui veut être millionnaire\". Votre but est de répondre correctement aux questions pour atteindre le montant maximum de 1 000 000 $ et devenir le nouveau millionnaire ! Profitez du jeu !"
+  "about_the_app": "est un jeu amusant sous forme de questions à choix multiples. Le jeu est basé sur le concept de \"Qui veut être millionnaire\". Votre but est de répondre correctement aux questions pour atteindre le montant maximum de 1 000 000 $ et devenir le nouveau millionnaire ! Profitez du jeu !",
+  "sign_in": "Se Connecter",
+  "sign_out": "Se Deconnecter",
+  "sign_in_with_google": "Se connecter avec Google",
+  "continue_without_signing": "Continuer sans se connecter",
+  "error_occured": "Une erreur s'est produite"
 }
