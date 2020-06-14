@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:millionaire_quiz/components/button_quiz.dart';
 import 'package:millionaire_quiz/components/dialog_latest_results.dart';
+import 'package:millionaire_quiz/components/dialog_top_leadboard.dart';
 import 'package:millionaire_quiz/components/quiz_page.dart';
 import 'package:millionaire_quiz/services/localizations.dart';
 
@@ -43,7 +44,11 @@ class ScorePage extends StatelessWidget {
                     ButtonQuiz(
                       MyLocalizations.of(context).localization['top_leadboard'],
                       () {
-
+                        showDialog(
+                          context: context,
+                          barrierDismissible: false,
+                          builder: (BuildContext context) => DialogTopLeadBoard(),
+                        );
                       },
                       textAlign: TextAlign.center,
                     ),

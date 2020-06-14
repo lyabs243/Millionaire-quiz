@@ -35,5 +35,8 @@
   "sign_in_with_google": "Se connecter avec Google",
   "continue_without_signing": "Continuer sans se connecter",
   "error_occured": "Une erreur s'est produite",
-  "top_leadboard": "Meilleurs Score"
+  "top_leadboard": "Meilleurs Score",
+  "you_reached": "vous avez atteint",
+  "this_month": "Ce mois-ci",
+  "this_week": "Cette semaine"
 }
