@@ -74,7 +74,7 @@ class DialogGetMoney extends StatelessWidget {
               SizedBox(height: (16.0 / 853) * MediaQuery.of(context).size.height),
               Text(
                 '${MyLocalizations.of(context).localization['you_wins']} \$ $eaningValueDescription,'
-                    ' ${MyLocalizations.of(context).localization['want_get_moneu']} ',
+                    ' ${MyLocalizations.of(context).localization['want_get_money']} ',
                 textAlign: TextAlign.center,
                 textScaleFactor: 1.2,
                 style: TextStyle(
