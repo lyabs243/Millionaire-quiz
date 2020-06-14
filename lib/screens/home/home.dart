@@ -15,6 +15,7 @@ import 'package:millionaire_quiz/screens/sign_in/sign_in_page.dart';
 import 'package:millionaire_quiz/services/constants.dart';
 import 'package:millionaire_quiz/services/localizations.dart';
 import 'package:google_sign_in/google_sign_in.dart';
+import 'package:firebase_database/firebase_database.dart';
 
 class HomePage extends StatefulWidget {
 
@@ -32,6 +33,8 @@ class _HomePageState extends State<HomePage>  with WidgetsBindingObserver {
   bool isLoading = true;
 
   User currentUser;
+
+  FirebaseDatabase database;
 
   @override
   initState() {
@@ -53,6 +56,9 @@ class _HomePageState extends State<HomePage>  with WidgetsBindingObserver {
         isLoading = false;
       });
     });
+
+
+    database = new FirebaseDatabase();
   }
 
   @override

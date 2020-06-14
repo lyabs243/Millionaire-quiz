@@ -224,7 +224,19 @@ class _GamePlayState extends State<GamePlay>  with TickerProviderStateMixin, Wid
           });
         }
         canShowTransition = true;
-        interstitialAd.show();
+        if (constants.SHOW_ADMOB) {
+          interstitialAd.show();
+        }
+        else {
+          if  (canShowTransition) {
+            setState(() {
+              is_loading = false;
+            });
+            showTransition();
+            interstitialAd.load();
+          }
+          canShowTransition = false;
+        }
       });
     }
     else {

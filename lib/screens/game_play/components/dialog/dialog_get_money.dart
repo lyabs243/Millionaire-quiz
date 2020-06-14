@@ -21,12 +21,14 @@ class DialogGetMoney extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    admobBanner = AdmobBanner(
-      adUnitId: constants.ADMOB_BANNER_ID,
-      adSize: AdmobBannerSize.LARGE_BANNER,
-      listener: (AdmobAdEvent event, Map<String, dynamic> args) {
-      },
-    );
+    if (constants.SHOW_ADMOB) {
+      admobBanner = AdmobBanner(
+        adUnitId: constants.ADMOB_BANNER_ID,
+        adSize: AdmobBannerSize.LARGE_BANNER,
+        listener: (AdmobAdEvent event, Map<String, dynamic> args) {
+        },
+      );
+    }
     return Dialog(
       shape: RoundedRectangleBorder(
         borderRadius: BorderRadius.circular(Consts.padding),
@@ -65,9 +67,10 @@ class DialogGetMoney extends StatelessWidget {
           child: Column(
             mainAxisSize: MainAxisSize.min, // To make the card compact
             children: <Widget>[
+              (constants.SHOW_ADMOB)?
               Container(
                 child: admobBanner,
-              ),
+              ): Container(),
               SizedBox(height: (16.0 / 853) * MediaQuery.of(context).size.height),
               Text(
                 '${MyLocalizations.of(context).localization['you_wins']} \$ $eaningValueDescription,'
