@@ -11,6 +11,7 @@ import 'package:millionaire_quiz/screens/about/about.dart';
 import 'package:millionaire_quiz/screens/game_play/game_play.dart';
 import 'package:audioplayers/audio_cache.dart';
 import 'package:audioplayers/audioplayers.dart';
+import 'package:millionaire_quiz/screens/score/score.dart';
 import 'package:millionaire_quiz/screens/sign_in/sign_in_page.dart';
 import 'package:millionaire_quiz/services/constants.dart';
 import 'package:millionaire_quiz/services/localizations.dart';
@@ -152,12 +153,10 @@ class _HomePageState extends State<HomePage>  with WidgetsBindingObserver {
                         Padding(padding: EdgeInsets.only(bottom: 20.0),),
                         ButtonQuiz(
                           MyLocalizations.of(context).localization['score'],
-                              () {
-                            showDialog(
-                              context: context,
-                              barrierDismissible: false,
-                              builder: (BuildContext context) => DialogLatestResults(),
-                            );
+                          () {
+                            Navigator.push(context, MaterialPageRoute(builder: (_context) {
+                              return ScorePage();
+                            }));
                           },
                           textAlign: TextAlign.center,
                         ),

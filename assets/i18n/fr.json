@@ -34,5 +34,6 @@
   "sign_out": "Se Deconnecter",
   "sign_in_with_google": "Se connecter avec Google",
   "continue_without_signing": "Continuer sans se connecter",
-  "error_occured": "Une erreur s'est produite"
+  "error_occured": "Une erreur s'est produite",
+  "top_leadboard": "Meilleurs Score"
 }
