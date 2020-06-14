@@ -4,30 +4,26 @@ import 'package:millionaire_quiz/components/quiz_page.dart';
 import 'package:millionaire_quiz/models/user.dart';
 import 'package:millionaire_quiz/screens/home/home.dart';
 import 'package:millionaire_quiz/services/localizations.dart';
-import 'package:google_sign_in/google_sign_in.dart';
 import 'package:fluttertoast/fluttertoast.dart';
+import 'package:progress_dialog/progress_dialog.dart';
 
 class SignInPage extends StatefulWidget {
 
   @override
   _SignInPagePageState createState() {
     return _SignInPagePageState();
+
   }
 }
 
 class _SignInPagePageState extends State<SignInPage> {
 
-  GoogleSignIn _googleSignIn;
+  ProgressDialog _progressDialog;
 
   @override
   initState() {
     super.initState();
-    _googleSignIn = GoogleSignIn(
-      scopes: [
-        'email',
-        'https://www.googleapis.com/auth/contacts.readonly',
-      ],
-    );
+    _progressDialog = ProgressDialog(context, isDismissible: false);
   }
 
   @override
@@ -35,31 +31,28 @@ class _SignInPagePageState extends State<SignInPage> {
     super.dispose();
   }
 
-  Future<void> _handleSignIn() async {
-    try {
-      var result = await _googleSignIn.signIn();
-
-      User user = User();
-      user.id = result.id;
-      user.fullName = result.displayName;
-      user.urlProfilPic = result.photoUrl;
-
-      User.setUser(user).then((value) {
+  Future<void> _handleSignIn(BuildContext _context) async {
+    _progressDialog.show();
+    User.handleSignIn(_context).then((value) {
+      _progressDialog.hide();
+      if (value) {
         Navigator.of(context).pushReplacement(MaterialPageRoute(builder: (context) {
           return HomePage();
         }));
-      });
-    } catch (error) {
-      Fluttertoast.showToast(
+      }
+      else {
+        Fluttertoast.showToast(
           msg: MyLocalizations.of(context).localization['error_occured'],
           toastLength: Toast.LENGTH_SHORT,
           gravity: ToastGravity.BOTTOM,
-      );
-    }
+        );
+      }
+    });
   }
 
 
   Widget build(BuildContext context) {
+    _progressDialog.style(message: MyLocalizations.of(context).localization['please_wait']);
     return Scaffold(
           body: SingleChildScrollView(
             child: Container(
@@ -83,7 +76,7 @@ class _SignInPagePageState extends State<SignInPage> {
                         ButtonQuiz(
                           MyLocalizations.of(context).localization['sign_in_with_google'],
                           () {
-                            _handleSignIn();
+                            _handleSignIn(context);
                           },
                           textAlign: TextAlign.center,
                         ),
