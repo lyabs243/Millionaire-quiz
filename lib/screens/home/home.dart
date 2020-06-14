@@ -15,6 +15,7 @@ import 'package:millionaire_quiz/screens/sign_in/sign_in_page.dart';
 import 'package:millionaire_quiz/services/constants.dart';
 import 'package:millionaire_quiz/services/localizations.dart';
 import 'package:google_sign_in/google_sign_in.dart';
+import '../../services/constants.dart' as constants;
 
 class HomePage extends StatefulWidget {
 
@@ -198,6 +199,7 @@ class _HomePageState extends State<HomePage>  with WidgetsBindingObserver {
                           textAlign: TextAlign.center,
                         ),
                         Padding(padding: EdgeInsets.only(bottom: 20.0),),
+                        (constants.USING_SERVER)?
                         ButtonQuiz(
                           (currentUser != null && currentUser.id.length > 0)?
                           MyLocalizations.of(context).localization['sign_out']:
@@ -229,7 +231,7 @@ class _HomePageState extends State<HomePage>  with WidgetsBindingObserver {
                             }
                           },
                           textAlign: TextAlign.center,
-                        )
+                        ): Container()
                       ],
                     )
                   ],
