@@ -440,11 +440,14 @@ class _GamePlayState extends State<GamePlay>  with TickerProviderStateMixin, Wid
       }
       else {
         currentBonusButtonIndex = -1;
-        hideAnswersEnable = false;
         controller.reverse(from: controller.value);
+        hideTwoAnswers();
 
-        hideAnswersFillColor = Colors.grey;
-        hideAnswersBorderColor = Colors.white;
+        setState(() {
+          hideAnswersFillColor = Colors.grey;
+          hideAnswersBorderColor = Colors.white;
+          hideAnswersEnable = false;
+        });
       }
     }
   }
