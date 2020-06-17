@@ -39,5 +39,7 @@
   "you_reached": "vous avez atteint",
   "this_month": "Ce mois-ci",
   "this_week": "Cette semaine",
-  "must_signin_leaderboard": "Vous devez vous inscrire pour voir le classement."
+  "must_signin_leaderboard": "Vous devez vous inscrire pour voir le classement.",
+  "want_exit_app": "Voulez-vous quitter cette application ?",
+  "exit": "Quitter"
 }

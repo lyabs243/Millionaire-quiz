@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:millionaire_quiz/components/button_quiz.dart';
+import 'package:millionaire_quiz/components/dialog_want_wxit.dart';
 import 'package:millionaire_quiz/components/layout_app_logo.dart';
 import 'package:millionaire_quiz/components/quiz_page.dart';
 import 'package:millionaire_quiz/models/user.dart';
@@ -55,44 +57,59 @@ class _SignInPagePageState extends State<SignInPage> {
 
   Widget build(BuildContext context) {
     _progressDialog.style(message: MyLocalizations.of(context).localization['please_wait']);
-    return Scaffold(
-          body: SingleChildScrollView(
-            child: Container(
-                width: MediaQuery.of(context).size.width,
-                height: MediaQuery.of(context).size.height,
-                decoration: QuizPage.quizDecoration(),
-                child: Column(
-                  children: <Widget>[
-                    Padding(padding: EdgeInsets.only(top: 70.0),),
-                    LayoutAppLogo(),
-                    Padding(padding: EdgeInsets.only(bottom: 40.0),),
-                    Column(
-                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                      children: <Widget>[
-                        ButtonQuiz(
-                          MyLocalizations.of(context).localization['sign_in_with_google'],
-                          () {
-                            _handleSignIn(context);
-                          },
-                          textAlign: TextAlign.center,
-                        ),
-                        Padding(padding: EdgeInsets.only(bottom: 20.0),),
-                        ButtonQuiz(
-                          MyLocalizations.of(context).localization['continue_without_signing'],
-                          () {
-                            Navigator.pushReplacement(context, NoAnimationMaterialPageRoute(builder: (context) {
-                              return HomePage();
-                            }));
-                          },
-                          textAlign: TextAlign.center,
-                        ),
-                        Padding(padding: EdgeInsets.only(bottom: 20.0),),
-                      ],
-                    )
-                  ],
-                )
-            ),
+    return WillPopScope(
+      child: Scaffold(
+        body: SingleChildScrollView(
+          child: Container(
+              width: MediaQuery.of(context).size.width,
+              height: MediaQuery.of(context).size.height,
+              decoration: QuizPage.quizDecoration(),
+              child: Column(
+                children: <Widget>[
+                  Padding(padding: EdgeInsets.only(top: 70.0),),
+                  LayoutAppLogo(),
+                  Padding(padding: EdgeInsets.only(bottom: 40.0),),
+                  Column(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    children: <Widget>[
+                      ButtonQuiz(
+                        MyLocalizations.of(context).localization['sign_in_with_google'],
+                            () {
+                          _handleSignIn(context);
+                        },
+                        textAlign: TextAlign.center,
+                      ),
+                      Padding(padding: EdgeInsets.only(bottom: 20.0),),
+                      ButtonQuiz(
+                        MyLocalizations.of(context).localization['continue_without_signing'],
+                            () {
+                          Navigator.pushReplacement(context, NoAnimationMaterialPageRoute(builder: (context) {
+                            return HomePage();
+                          }));
+                        },
+                        textAlign: TextAlign.center,
+                      ),
+                      Padding(padding: EdgeInsets.only(bottom: 20.0),),
+                    ],
+                  )
+                ],
+              )
           ),
-        );
+        ),
+      ),
+      onWillPop: () async {
+        showDialog(
+          context: context,
+          barrierDismissible: false,
+          builder: (BuildContext context) => DialogWantExit(),
+        ).then((value) {
+          if(value) {
+            SystemChannels.platform.invokeMethod('SystemNavigator.pop');
+          }
+        });
+
+        return false;
+      }
+    );
   }
 }
