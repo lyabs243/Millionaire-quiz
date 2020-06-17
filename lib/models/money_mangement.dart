@@ -40,11 +40,14 @@ class MoneyManagement {
    */
   static String moneyDescriptionReduce(int value) {
     String result = '$value';
-    if(value >= 1000000) {
-      result = (value / 1000000).toString() + 'M';
+    if(value >= 1000000000) {
+      result = (value / 1000000000).toStringAsFixed(1) + 'B';
+    }
+    else if(value >= 1000000) {
+      result = (value / 1000000).toStringAsFixed(1) + 'M';
     }
     else if(value >= 1000) {
-      result = (value / 1000).toString() + 'K';
+      result = (value / 1000).toStringAsFixed(1) + 'K';
     }
     result = result.replaceAll('.0', '');
     return result;
