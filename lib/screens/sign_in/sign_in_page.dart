@@ -5,6 +5,7 @@ import 'package:millionaire_quiz/models/user.dart';
 import 'package:millionaire_quiz/screens/home/home.dart';
 import 'package:millionaire_quiz/services/localizations.dart';
 import 'package:fluttertoast/fluttertoast.dart';
+import 'package:millionaire_quiz/services/no_animation_pageroute.dart';
 import 'package:progress_dialog/progress_dialog.dart';
 
 class SignInPage extends StatefulWidget {
@@ -36,7 +37,7 @@ class _SignInPagePageState extends State<SignInPage> {
     User.handleSignIn(_context).then((value) {
       _progressDialog.hide();
       if (value) {
-        Navigator.of(context).pushReplacement(MaterialPageRoute(builder: (context) {
+        Navigator.pushReplacement(context, NoAnimationMaterialPageRoute(builder: (context) {
           return HomePage();
         }));
       }
@@ -84,7 +85,7 @@ class _SignInPagePageState extends State<SignInPage> {
                         ButtonQuiz(
                           MyLocalizations.of(context).localization['continue_without_signing'],
                           () {
-                            Navigator.of(context).pushReplacement(MaterialPageRoute(builder: (context) {
+                            Navigator.pushReplacement(context, NoAnimationMaterialPageRoute(builder: (context) {
                               return HomePage();
                             }));
                           },

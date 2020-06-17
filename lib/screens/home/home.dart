@@ -16,6 +16,7 @@ import 'package:millionaire_quiz/screens/sign_in/sign_in_page.dart';
 import 'package:millionaire_quiz/services/constants.dart';
 import 'package:millionaire_quiz/services/localizations.dart';
 import 'package:google_sign_in/google_sign_in.dart';
+import 'package:millionaire_quiz/services/no_animation_pageroute.dart';
 import '../../services/constants.dart' as constants;
 
 class HomePage extends StatefulWidget {
@@ -137,11 +138,9 @@ class _HomePageState extends State<HomePage>  with WidgetsBindingObserver {
                             if(player != null) {
                               player.pause();
                             }
-                            Navigator.push(context, MaterialPageRoute(
-                                builder: (_context){
-                                  return GamePlay();
-                                }
-                            )).then((value) {
+                            Navigator.push(context, NoAnimationMaterialPageRoute(builder: (context) {
+                              return GamePlay();
+                            })).then((value) {
                               if(player != null && (_settings != null && _settings.audioEnable)) {
                                 player.resume();
                               }
@@ -154,7 +153,7 @@ class _HomePageState extends State<HomePage>  with WidgetsBindingObserver {
                         ButtonQuiz(
                           MyLocalizations.of(context).localization['score'],
                           () {
-                            Navigator.push(context, MaterialPageRoute(builder: (_context) {
+                            Navigator.push(context, NoAnimationMaterialPageRoute(builder: (context) {
                               return ScorePage();
                             }));
                           },
@@ -164,9 +163,9 @@ class _HomePageState extends State<HomePage>  with WidgetsBindingObserver {
                         ButtonQuiz(
                           MyLocalizations.of(context).localization['about'],
                               () {
-                            Navigator.push(context, MaterialPageRoute(builder: (_context) {
-                              return About();
-                            }));
+                                Navigator.push(context, NoAnimationMaterialPageRoute(builder: (context) {
+                                  return About();
+                                }));
                           },
                           textAlign: TextAlign.center,
                         ),
@@ -216,17 +215,14 @@ class _HomePageState extends State<HomePage>  with WidgetsBindingObserver {
                               currentUser.id = '';
                               currentUser.urlProfilPic = '';
                               User.setUser(currentUser);
-                              Navigator.of(context).pushReplacement(
-                                  MaterialPageRoute(builder: (context) {
-                                    return SignInPage();
-                                  }));
-
+                              Navigator.pushReplacement(context, NoAnimationMaterialPageRoute(builder: (context) {
+                                return SignInPage();
+                              }));
                             }
                             else {
-                              Navigator.of(context).pushReplacement(
-                                  MaterialPageRoute(builder: (context) {
-                                    return SignInPage();
-                                  }));
+                              Navigator.pushReplacement(context, NoAnimationMaterialPageRoute(builder: (context) {
+                                return SignInPage();
+                              }));
                             }
                           },
                           textAlign: TextAlign.center,
