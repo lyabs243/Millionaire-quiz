@@ -11,6 +11,7 @@ const ADMOB_INTERSTITIAL_ID = 'ca-app-pub-3940256099942544/1033173712';
 const ADMOB_REWARD_ID = 'ca-app-pub-3940256099942544/5224354917';
 
 const APP_NAME = 'Millionaire Quiz';
+const APP_PACKAGE = 'org.notifygroup.lyabs243.millionaire_quiz';
 const APP_VERSION = '1.0';
 const APP_DATE = 'JUNE 2019';
 const APP_COMPANY_NAME = 'Lyabs Media';

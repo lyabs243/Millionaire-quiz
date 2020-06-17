@@ -22,6 +22,8 @@ import 'package:millionaire_quiz/services/localizations.dart';
 import 'package:google_sign_in/google_sign_in.dart';
 import 'package:millionaire_quiz/services/no_animation_pageroute.dart';
 import '../../services/constants.dart' as constants;
+import 'package:url_launcher/url_launcher.dart';
+import 'package:share/share.dart';
 
 class HomePage extends StatefulWidget {
 
@@ -158,8 +160,9 @@ class _HomePageState extends State<HomePage>  with WidgetsBindingObserver {
                               size: (25.0 / 853) * MediaQuery.of(context).size.height,
                               color: Colors.white,
                             ),
-                                () {
-
+                            () {
+                              Share.share(MyLocalizations.instanceLocalization['text_share_app'] +
+                            'https://play.google.com/store/apps/details?id=${constants.APP_PACKAGE}');
                             }
                         ),
                         width: (MediaQuery.of(context).size.width * 70 / 100) / 5,
@@ -171,8 +174,8 @@ class _HomePageState extends State<HomePage>  with WidgetsBindingObserver {
                               size: (25.0 / 853) * MediaQuery.of(context).size.height,
                               color: Colors.white,
                             ),
-                                () {
-
+                            () {
+                              launch('https://play.google.com/store/apps/details?id=${constants.APP_PACKAGE}');
                             }
                         ),
                         width: (MediaQuery.of(context).size.width * 70 / 100) / 5,

@@ -31,6 +31,7 @@ dev_dependencies:
     sdk: flutter
   dio: ^3.0.8
   audioplayers: ^0.15.1
+  url_launcher: ^5.4.11
   admob_flutter: "^0.3.4"
   shared_preferences: ^0.5.7+3
   fluttertoast: ^4.0.1
@@ -38,6 +39,7 @@ dev_dependencies:
   google_sign_in: ^4.5.1
   progress_dialog: ^1.2.4
   pull_to_refresh: ^1.5.8
+  share: ^0.6.3+5
 
 
 # For information on the generic Dart part of this file, see the
