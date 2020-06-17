@@ -12,6 +12,7 @@ import 'package:millionaire_quiz/screens/about/about.dart';
 import 'package:millionaire_quiz/screens/game_play/game_play.dart';
 import 'package:audioplayers/audio_cache.dart';
 import 'package:audioplayers/audioplayers.dart';
+import 'package:millionaire_quiz/screens/home/components/dialog_must_signin.dart';
 import 'package:millionaire_quiz/screens/sign_in/sign_in_page.dart';
 import 'package:millionaire_quiz/services/constants.dart';
 import 'package:millionaire_quiz/services/localizations.dart';
@@ -237,12 +238,27 @@ class _HomePageState extends State<HomePage>  with WidgetsBindingObserver {
                         Padding(padding: EdgeInsets.only(bottom: 20.0),),
                         ButtonQuiz(
                           MyLocalizations.of(context).localization['top_leadboard'],
-                              () {
-                            showDialog(
-                              context: context,
-                              barrierDismissible: false,
-                              builder: (BuildContext context) => DialogTopLeadBoard(),
-                            );
+                          () {
+                            if (currentUser.id.length > 0) {
+                              showDialog(
+                                context: context,
+                                barrierDismissible: false,
+                                builder: (BuildContext context) => DialogTopLeadBoard(),
+                              );
+                            }
+                            else {
+                              showDialog(
+                                context: context,
+                                barrierDismissible: false,
+                                builder: (BuildContext context) => DialogMustSignin(),
+                              ).then((value) {
+                                if (value) {
+                                  Navigator.pushReplacement(context, NoAnimationMaterialPageRoute(builder: (context) {
+                                    return SignInPage();
+                                  }));
+                                }
+                              });
+                            }
                           },
                           textAlign: TextAlign.center,
                         ),

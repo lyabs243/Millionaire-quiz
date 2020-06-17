@@ -38,5 +38,6 @@
   "top_leadboard": "Meilleurs Score",
   "you_reached": "vous avez atteint",
   "this_month": "Ce mois-ci",
-  "this_week": "Cette semaine"
+  "this_week": "Cette semaine",
+  "must_signin_leaderboard": "Vous devez vous inscrire pour voir le classement."
 }

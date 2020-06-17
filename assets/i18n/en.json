@@ -38,5 +38,6 @@
   "top_leadboard": "Leaderboard",
   "you_reached": "You reached",
   "this_month": "This Month",
-  "this_week": "This Week"
+  "this_week": "This Week",
+  "must_signin_leaderboard": "You must siging in to see leaderboard."
 }
