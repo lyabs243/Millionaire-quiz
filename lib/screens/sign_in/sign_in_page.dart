@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:millionaire_quiz/components/button_quiz.dart';
+import 'package:millionaire_quiz/components/layout_app_logo.dart';
 import 'package:millionaire_quiz/components/quiz_page.dart';
 import 'package:millionaire_quiz/models/user.dart';
 import 'package:millionaire_quiz/screens/home/home.dart';
@@ -63,13 +64,7 @@ class _SignInPagePageState extends State<SignInPage> {
                 child: Column(
                   children: <Widget>[
                     Padding(padding: EdgeInsets.only(top: 70.0),),
-                    Container(
-                      width: MediaQuery.of(context).size.width / 2,
-                      height: MediaQuery.of(context).size.width / 2,
-                      child: Image.asset(
-                          'assets/logo.png'
-                      ),
-                    ),
+                    LayoutAppLogo(),
                     Padding(padding: EdgeInsets.only(bottom: 40.0),),
                     Column(
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,

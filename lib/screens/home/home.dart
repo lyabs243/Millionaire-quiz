@@ -4,6 +4,7 @@ import 'package:millionaire_quiz/components/button_quiz.dart';
 import 'package:millionaire_quiz/components/dialog_latest_results.dart';
 import 'package:millionaire_quiz/components/dialog_settings.dart';
 import 'package:millionaire_quiz/components/dialog_top_leadboard.dart';
+import 'package:millionaire_quiz/components/layout_app_logo.dart';
 import 'package:millionaire_quiz/components/layout_load.dart';
 import 'package:millionaire_quiz/components/quiz_page.dart';
 import 'package:millionaire_quiz/models/settings.dart';
@@ -207,14 +208,9 @@ class _HomePageState extends State<HomePage>  with WidgetsBindingObserver {
                         )
                       ],
                     ),
-                    Container(
-                      width: MediaQuery.of(context).size.width / 2,
-                      height: MediaQuery.of(context).size.width / 2,
-                      child: Image.asset(
-                          'assets/logo.png'
-                      ),
-                    ),
-                    Padding(padding: EdgeInsets.only(bottom: 40.0),),
+                    Padding(padding: EdgeInsets.only(bottom: 20.0),),
+                    LayoutAppLogo(),
+                    Padding(padding: EdgeInsets.only(bottom: 20.0),),
                     Column(
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
                       children: <Widget>[
