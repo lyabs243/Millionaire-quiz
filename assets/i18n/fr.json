@@ -41,5 +41,6 @@
   "this_week": "Cette semaine",
   "must_signin_leaderboard": "Vous devez vous inscrire pour voir le classement.",
   "want_exit_app": "Voulez-vous quitter cette application ?",
-  "exit": "Quitter"
+  "exit": "Quitter",
+  "want_exit_game": "Vous voulez sortir du jeu ? Toute votre progression sera perdue."
 }

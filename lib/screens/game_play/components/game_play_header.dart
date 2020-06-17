@@ -5,13 +5,13 @@ import 'package:millionaire_quiz/services/localizations.dart';
 class GamePlayHeader extends StatelessWidget {
 
   int currentMoney;
-  Function onGetMoneyClicked, onBonusHideClicked, onBonusAskAudienceClicked, onBonusCallFriendClicked;
+  Function onGetMoneyClicked, onBonusHideClicked, onBonusAskAudienceClicked, onBonusCallFriendClicked, onExitGame;
   Color callFriendBorderColor = Colors.blue, callFriendFillColor = Colors.black, askAudienceBorderColor = Colors.blue,
       askAudienceFillColor = Colors.black, hideAnswersBorderColor = Colors.blue, hideAnswersFillColor = Colors.black;
 
   GamePlayHeader(this.currentMoney, this.onBonusCallFriendClicked, this.onBonusAskAudienceClicked, this.onBonusHideClicked,
       this.onGetMoneyClicked, this.hideAnswersBorderColor, this.hideAnswersFillColor, this.askAudienceFillColor, this.askAudienceBorderColor,
-      this.callFriendFillColor, this.callFriendBorderColor);
+      this.callFriendFillColor, this.callFriendBorderColor, this.onExitGame);
 
   @override
   Widget build(BuildContext context) {
@@ -19,6 +19,19 @@ class GamePlayHeader extends StatelessWidget {
       mainAxisAlignment: MainAxisAlignment.spaceBetween,
       mainAxisSize: MainAxisSize.min,
       children: <Widget>[
+        Container(
+          child: ButtonCircle(
+              Icon(
+                Icons.arrow_back,
+                size: (25.0 / 853) * MediaQuery.of(context).size.height,
+                color: Colors.white,
+              ),
+              () {
+                this.onExitGame();
+              }
+          ),
+          width: (MediaQuery.of(context).size.width * 70 / 100) / 5,
+        ),
         (currentMoney > 0)?
         Container(
           height: (40.0 / 853) * MediaQuery.of(context).size.height,
@@ -53,7 +66,7 @@ class GamePlayHeader extends StatelessWidget {
             borderColor: hideAnswersBorderColor,
             fillColor: hideAnswersFillColor,
           ),
-          width: (MediaQuery.of(context).size.width * 70 / 100) / 4,
+          width: (MediaQuery.of(context).size.width * 70 / 100) / 5,
         ),
         Container(
           child: ButtonCircle(
@@ -66,7 +79,7 @@ class GamePlayHeader extends StatelessWidget {
             borderColor: callFriendBorderColor,
             fillColor: callFriendFillColor,
           ),
-          width: (MediaQuery.of(context).size.width * 70 / 100) / 4,
+          width: (MediaQuery.of(context).size.width * 70 / 100) / 5,
         ),
         Container(
           child: ButtonCircle(
@@ -79,7 +92,7 @@ class GamePlayHeader extends StatelessWidget {
             borderColor: askAudienceBorderColor,
             fillColor: askAudienceFillColor,
           ),
-          width: (MediaQuery.of(context).size.width * 70 / 100) / 4,
+          width: (MediaQuery.of(context).size.width * 70 / 100) / 5,
         )
       ],
     );

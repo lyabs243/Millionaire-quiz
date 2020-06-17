@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:millionaire_quiz/components/button_quiz.dart';
-import 'package:millionaire_quiz/components/dialog_want_wxit.dart';
+import 'package:millionaire_quiz/components/dialog_want_exit.dart';
 import 'package:millionaire_quiz/components/layout_app_logo.dart';
 import 'package:millionaire_quiz/components/quiz_page.dart';
 import 'package:millionaire_quiz/models/user.dart';

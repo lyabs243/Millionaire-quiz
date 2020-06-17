@@ -7,6 +7,7 @@ import 'package:millionaire_quiz/models/answer.dart';
 import 'package:millionaire_quiz/models/question.dart';
 import 'package:millionaire_quiz/models/score.dart';
 import 'package:millionaire_quiz/models/settings.dart';
+import 'package:millionaire_quiz/screens/game_play/components/dialog/dialog_want_quit_game.dart';
 import 'package:millionaire_quiz/screens/game_play/components/game_play_body.dart';
 import 'file:///D:/code/Millionaire-quiz/lib/screens/game_play/components/dialog/dialog_ask_audience.dart';
 import 'file:///D:/code/Millionaire-quiz/lib/screens/game_play/components/dialog/dialog_get_money.dart';
@@ -177,6 +178,22 @@ class _GamePlayState extends State<GamePlay>  with TickerProviderStateMixin, Wid
     }
   }
 
+  void exitGame() {
+    controller.stop();
+    showDialog(
+      context: context,
+      barrierDismissible: false,
+      builder: (BuildContext context) => DialogExitGame(),
+    ).then((value) {
+      if(value) {
+        Navigator.pop(context);
+      }
+      else {
+        controller.reverse(from: controller.value);
+      }
+    });
+  }
+
   play() async {
     //play audio start
     if(_settings != null && _settings.audioEnable) {
@@ -262,37 +279,41 @@ class _GamePlayState extends State<GamePlay>  with TickerProviderStateMixin, Wid
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      body: SingleChildScrollView(
-        child: Container(
-          decoration: QuizPage.quizDecoration(),
-          height: MediaQuery.of(context).size.height,
-          padding: EdgeInsets.only(left: 8.0, right: 8.0),
-          child: (is_loading)?
-          LayoutLoad():
-          ((questions.length > 0)?
-          SingleChildScrollView(
-            child: Column(
-              children: <Widget>[
-                Padding(padding: EdgeInsets.only(top: 40.0),),
-                GamePlayHeader(currentMoney, onBonusCallAFriendClicked, onBonusAskAudienceClicked,
-                    onBonusHideAnswersClicked, onGetMoneyClicked, hideAnswersBorderColor, hideAnswersFillColor,
-                    askAudienceFillColor, askAudienceBorderColor, callFriendFillColor, callFriendBorderColor),
-                Padding(padding: EdgeInsets.only(bottom: (30.0 / 853) * MediaQuery.of(context).size.height),),
-                GamePlayBody(getMoneyDescription(), current_question, controller, answersVisible, onAnswerAclicked,
-                    onAnswerBClicked, onAnswerCClicked, onAnswerDClicked, getAnswerButtonColor)
-              ],
+    return WillPopScope(
+        child: Scaffold(
+          body: SingleChildScrollView(
+            child: Container(
+              decoration: QuizPage.quizDecoration(),
+              height: MediaQuery.of(context).size.height,
+              padding: EdgeInsets.only(left: 8.0, right: 8.0),
+              child: (is_loading)?
+              LayoutLoad():
+              ((questions.length > 0)?
+              SingleChildScrollView(
+                child: Column(
+                  children: <Widget>[
+                    Padding(padding: EdgeInsets.only(top: 40.0),),
+                    GamePlayHeader(currentMoney, onBonusCallAFriendClicked, onBonusAskAudienceClicked,
+                        onBonusHideAnswersClicked, onGetMoneyClicked, hideAnswersBorderColor, hideAnswersFillColor,
+                        askAudienceFillColor, askAudienceBorderColor, callFriendFillColor, callFriendBorderColor, exitGame),
+                    Padding(padding: EdgeInsets.only(bottom: (30.0 / 853) * MediaQuery.of(context).size.height),),
+                    GamePlayBody(getMoneyDescription(), current_question, controller, answersVisible, onAnswerAclicked,
+                        onAnswerBClicked, onAnswerCClicked, onAnswerDClicked, getAnswerButtonColor)
+                  ],
+                ),
+              ):
+              LoadFailed(() {
+                setState(() {
+                  is_loading = true;
+                });
+                initQuestions();
+              })),
             ),
-          ):
-          LoadFailed(() {
-            setState(() {
-              is_loading = true;
-            });
-            initQuestions();
-          })),
+          ),
         ),
-      ),
-    );
+        onWillPop: () {
+
+        });
   }
 
   checkAnswer(int index) async {

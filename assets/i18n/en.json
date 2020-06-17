@@ -41,5 +41,6 @@
   "this_week": "This Week",
   "must_signin_leaderboard": "You must siging in to see leaderboard.",
   "want_exit_app": "Do you want to exit this app?",
-  "exit": "Exit"
+  "exit": "Exit",
+  "want_exit_game": "Do you want to exit the game? All your progression will be lose."
 }

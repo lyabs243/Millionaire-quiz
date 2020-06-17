@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:millionaire_quiz/components/button_circle.dart';
 import 'package:millionaire_quiz/components/quiz_page.dart';
 import 'package:millionaire_quiz/services/localizations.dart';
 import '../../services/constants.dart' as constants;
@@ -17,6 +18,25 @@ class About extends StatelessWidget {
           child: Column(
             children: <Widget>[
               Padding(padding: EdgeInsets.only(top: 40.0),),
+              Row(
+                mainAxisAlignment: MainAxisAlignment.start,
+                children: <Widget>[
+                  Container(
+                    child: ButtonCircle(
+                        Icon(
+                          Icons.arrow_back,
+                          size: (25.0 / 853) * MediaQuery.of(context).size.height,
+                          color: Colors.white,
+                        ),
+                        () {
+                          Navigator.pop(context);
+                        }
+                    ),
+                    width: (MediaQuery.of(context).size.width * 70 / 100) / 5,
+                  ),
+                ],
+              ),
+              Padding(padding: EdgeInsets.only(bottom: 20.0),),
               Container(
                 child: Text(
                   MyLocalizations.of(context).localization['about'],

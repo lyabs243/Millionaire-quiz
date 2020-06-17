@@ -5,7 +5,7 @@ import 'package:millionaire_quiz/components/button_quiz.dart';
 import 'package:millionaire_quiz/components/dialog_latest_results.dart';
 import 'package:millionaire_quiz/components/dialog_settings.dart';
 import 'package:millionaire_quiz/components/dialog_top_leadboard.dart';
-import 'package:millionaire_quiz/components/dialog_want_wxit.dart';
+import 'package:millionaire_quiz/components/dialog_want_exit.dart';
 import 'package:millionaire_quiz/components/layout_app_logo.dart';
 import 'package:millionaire_quiz/components/layout_load.dart';
 import 'package:millionaire_quiz/components/quiz_page.dart';
