@@ -352,15 +352,13 @@ class _DialogTopLeadBoard extends State<DialogTopLeadBoard> {
           child: Center(child:CircularProgressIndicator()),
         ));
       }
+      widgets.add(dialogBottomBar());
     }
     else {
       widgets.add(Container(
         child: LayoutLoad(),
-        height: MediaQuery.of(context).size.height * 60 / 100,
       ));
     }
-
-    widgets.add(dialogBottomBar());
 
     return widgets;
   }
