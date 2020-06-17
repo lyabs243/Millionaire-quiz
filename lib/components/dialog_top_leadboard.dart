@@ -1,3 +1,4 @@
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:millionaire_quiz/components/layout_load.dart';
 import 'package:millionaire_quiz/models/money_mangement.dart';
@@ -289,7 +290,7 @@ class _DialogTopLeadBoard extends State<DialogTopLeadBoard> {
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: <Widget>[
                 Container(
-                  width: MediaQuery.of(context).size.width * 5 /100,
+                  width: (MediaQuery.of(context).size.width * 80 / 100) * 5/100,
                   alignment: Alignment.center,
                   child: Text(
                     '${index + 1}',
@@ -316,19 +317,20 @@ class _DialogTopLeadBoard extends State<DialogTopLeadBoard> {
                   ),
                 ),
                 Container(
-                  width: MediaQuery.of(context).size.width * 35 /100,
-                  alignment: Alignment.center,
+                  width: (MediaQuery.of(context).size.width * 80 / 100) * 35 /100,
+                  margin: EdgeInsets.only(left: 4.0),
+                  alignment: Alignment.centerLeft,
                   child: Text(
                     leaderBoards[index].fullName,
                     maxLines: 2,
-                    textScaleFactor: 1.5,
+                    textScaleFactor: 1.2,
                     style: TextStyle(
                         color: Colors.white
                     ),
                   ),
                 ),
                 Container(
-                  width: MediaQuery.of(context).size.width * 20 /100,
+                  width: (MediaQuery.of(context).size.width * 80 / 100) * 20 /100,
                   alignment: Alignment.center,
                   child: Text(
                     '\$ ${MoneyManagement.moneyDescriptionReduce(leaderBoards[index].total)}',
