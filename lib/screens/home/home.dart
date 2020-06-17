@@ -3,6 +3,7 @@ import 'package:millionaire_quiz/components/button_circle.dart';
 import 'package:millionaire_quiz/components/button_quiz.dart';
 import 'package:millionaire_quiz/components/dialog_latest_results.dart';
 import 'package:millionaire_quiz/components/dialog_settings.dart';
+import 'package:millionaire_quiz/components/dialog_top_leadboard.dart';
 import 'package:millionaire_quiz/components/layout_load.dart';
 import 'package:millionaire_quiz/components/quiz_page.dart';
 import 'package:millionaire_quiz/models/settings.dart';
@@ -11,7 +12,6 @@ import 'package:millionaire_quiz/screens/about/about.dart';
 import 'package:millionaire_quiz/screens/game_play/game_play.dart';
 import 'package:audioplayers/audio_cache.dart';
 import 'package:audioplayers/audioplayers.dart';
-import 'package:millionaire_quiz/screens/score/score.dart';
 import 'package:millionaire_quiz/screens/sign_in/sign_in_page.dart';
 import 'package:millionaire_quiz/services/constants.dart';
 import 'package:millionaire_quiz/services/localizations.dart';
@@ -97,27 +97,112 @@ class _HomePageState extends State<HomePage>  with WidgetsBindingObserver {
                   children: <Widget>[
                     Padding(padding: EdgeInsets.only(top: 40.0),),
                     Row(
-                      mainAxisAlignment: MainAxisAlignment.end,
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
                       children: <Widget>[
-                        ButtonCircle(
-                            Icon(
-                              Icons.share,
-                              size: 25.0,
-                              color: Colors.white,
+                        (constants.USING_SERVER)?
+                        Container(
+                          height: (40.0 / 853) * MediaQuery.of(context).size.height,
+                          child: new RaisedButton(
+                            onPressed: () {
+                              if (currentUser != null && currentUser.id.length > 0) { //logout
+                                GoogleSignIn _googleSignIn = GoogleSignIn(
+                                  scopes: [
+                                    'email',
+                                    'https://www.googleapis.com/auth/contacts.readonly',
+                                  ],
+                                );
+                                _googleSignIn.signOut();
+                                currentUser.fullName = '';
+                                currentUser.id = '';
+                                currentUser.urlProfilPic = '';
+                                User.setUser(currentUser);
+                                Navigator.pushReplacement(context, NoAnimationMaterialPageRoute(builder: (context) {
+                                  return SignInPage();
+                                }));
+                              }
+                              else {
+                                Navigator.pushReplacement(context, NoAnimationMaterialPageRoute(builder: (context) {
+                                  return SignInPage();
+                                }));
+                              }
+                            },
+                            highlightColor: Colors.orange,
+                            child: SizedBox(
+                              child: Text(
+                                (currentUser != null && currentUser.id.length > 0)?
+                                MyLocalizations.of(context).localization['sign_out']:
+                                MyLocalizations.of(context).localization['sign_in'],
+                                textAlign: TextAlign.center,
+                                style: new TextStyle(color: Colors.white, fontSize: (18.0 / 853) * MediaQuery.of(context).size.height),
+                              ),
+                              width: MediaQuery.of(context).size.width * 25 / 100,
                             ),
-                                () {
+                            color: Colors.black,
+                            elevation: 10.0,
+                            textColor: Colors.white,
+                            shape: RoundedRectangleBorder(
+                                borderRadius: new BorderRadius.circular(30.0),
+                                side: BorderSide(color: Theme.of(context).primaryColor, width: 2.0)
+                            ),
+                          ),
+                        ): Container(),
+                        Container(
+                          child: ButtonCircle(
+                              Icon(
+                                Icons.share,
+                                size: (25.0 / 853) * MediaQuery.of(context).size.height,
+                                color: Colors.white,
+                              ),
+                                  () {
 
-                            }
+                              }
+                          ),
+                          width: (MediaQuery.of(context).size.width * 70 / 100) / 5,
                         ),
-                        ButtonCircle(
-                            Icon(
-                              Icons.star,
-                              size: 25.0,
-                              color: Colors.white,
-                            ),
-                                () {
+                        Container(
+                          child: ButtonCircle(
+                              Icon(
+                                Icons.star,
+                                size: (25.0 / 853) * MediaQuery.of(context).size.height,
+                                color: Colors.white,
+                              ),
+                              () {
 
-                            }
+                              }
+                          ),
+                          width: (MediaQuery.of(context).size.width * 70 / 100) / 5,
+                        ),
+                        Container(
+                          child: ButtonCircle(
+                              Icon(
+                                Icons.settings,
+                                size: (25.0 / 853) * MediaQuery.of(context).size.height,
+                                color: Colors.white,
+                              ),
+                                  () {
+                                showDialog(
+                                  context: context,
+                                  barrierDismissible: false,
+                                  builder: (BuildContext context) => DialogSettings(),
+                                ).then((value) {
+                                  Settings.settingsInstance = value;
+                                  setState(() {
+                                    if(_settings.audioEnable != value.audioEnable) {
+                                      if(value.audioEnable) {
+                                        playMainSong();
+                                      }
+                                      else {
+                                        if(player != null) {
+                                          player.stop();
+                                        }
+                                      }
+                                    }
+                                    _settings = value;
+                                  });
+                                });
+                              }
+                          ),
+                          width: (MediaQuery.of(context).size.width * 70 / 100) / 5,
                         )
                       ],
                     ),
@@ -151,11 +236,25 @@ class _HomePageState extends State<HomePage>  with WidgetsBindingObserver {
                         ),
                         Padding(padding: EdgeInsets.only(bottom: 20.0),),
                         ButtonQuiz(
-                          MyLocalizations.of(context).localization['score'],
-                          () {
-                            Navigator.push(context, NoAnimationMaterialPageRoute(builder: (context) {
-                              return ScorePage();
-                            }));
+                          MyLocalizations.of(context).localization['top_leadboard'],
+                              () {
+                            showDialog(
+                              context: context,
+                              barrierDismissible: false,
+                              builder: (BuildContext context) => DialogTopLeadBoard(),
+                            );
+                          },
+                          textAlign: TextAlign.center,
+                        ),
+                        Padding(padding: EdgeInsets.only(bottom: 20.0),),
+                        ButtonQuiz(
+                          MyLocalizations.of(context).localization['latest_results'],
+                              () {
+                            showDialog(
+                              context: context,
+                              barrierDismissible: false,
+                              builder: (BuildContext context) => DialogLatestResults(),
+                            );
                           },
                           textAlign: TextAlign.center,
                         ),
@@ -169,64 +268,6 @@ class _HomePageState extends State<HomePage>  with WidgetsBindingObserver {
                           },
                           textAlign: TextAlign.center,
                         ),
-                        Padding(padding: EdgeInsets.only(bottom: 20.0),),
-                        ButtonQuiz(
-                          MyLocalizations.of(context).localization['settings'],
-                              () {
-                            showDialog(
-                              context: context,
-                              barrierDismissible: false,
-                              builder: (BuildContext context) => DialogSettings(),
-                            ).then((value) {
-                              Settings.settingsInstance = value;
-                              setState(() {
-                                if(_settings.audioEnable != value.audioEnable) {
-                                  if(value.audioEnable) {
-                                    playMainSong();
-                                  }
-                                  else {
-                                    if(player != null) {
-                                      player.stop();
-                                    }
-                                  }
-                                }
-                                _settings = value;
-                              });
-                            });
-                          },
-                          textAlign: TextAlign.center,
-                        ),
-                        Padding(padding: EdgeInsets.only(bottom: 20.0),),
-                        (constants.USING_SERVER)?
-                        ButtonQuiz(
-                          (currentUser != null && currentUser.id.length > 0)?
-                          MyLocalizations.of(context).localization['sign_out']:
-                          MyLocalizations.of(context).localization['sign_in'],
-                          () {
-                            if (currentUser != null && currentUser.id.length > 0) { //logout
-                              GoogleSignIn _googleSignIn = GoogleSignIn(
-                                scopes: [
-                                  'email',
-                                  'https://www.googleapis.com/auth/contacts.readonly',
-                                ],
-                              );
-                              _googleSignIn.signOut();
-                              currentUser.fullName = '';
-                              currentUser.id = '';
-                              currentUser.urlProfilPic = '';
-                              User.setUser(currentUser);
-                              Navigator.pushReplacement(context, NoAnimationMaterialPageRoute(builder: (context) {
-                                return SignInPage();
-                              }));
-                            }
-                            else {
-                              Navigator.pushReplacement(context, NoAnimationMaterialPageRoute(builder: (context) {
-                                return SignInPage();
-                              }));
-                            }
-                          },
-                          textAlign: TextAlign.center,
-                        ): Container()
                       ],
                     )
                   ],
