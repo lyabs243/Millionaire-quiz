@@ -10,6 +10,7 @@ class LeaderBoard {
   int total = 0;
 
   static final String URL_GET_LEADERBOARD = constants.BASE_URL + 'index.php/playerScore/get_top_leadboard/';
+  static final String URL_ADD_PLAYER_SCORE = constants.BASE_URL + 'index.php/playerScore/add/';
 
   LeaderBoard(this.idAccount, this.urlProfilPic, this.fullName, this.total);
 
@@ -34,6 +35,21 @@ class LeaderBoard {
       }
     });
     return leaderBoards;
+  }
+
+  static Future<bool> addGameResult(BuildContext context, String idAccount, int score) async {
+    bool result = true;
+    Map<String, dynamic> params = new Map<String, dynamic>();
+    params['id_account'] = idAccount;
+    params['score'] = score;
+    await Api(context).getJsonFromServer(URL_ADD_PLAYER_SCORE, params).then((map) {
+      if (map != null) {
+        if(map['result'] != null || map['result'] == '0') {
+          result = false;
+        }
+      }
+    });
+    return result;
   }
 
   static LeaderBoard getFromMap(Map item) {

@@ -4,9 +4,11 @@ import 'package:flutter/material.dart';
 import 'package:millionaire_quiz/components/layout_load.dart';
 import 'package:millionaire_quiz/components/quiz_page.dart';
 import 'package:millionaire_quiz/models/answer.dart';
+import 'package:millionaire_quiz/models/leaderboard.dart';
 import 'package:millionaire_quiz/models/question.dart';
 import 'package:millionaire_quiz/models/score.dart';
 import 'package:millionaire_quiz/models/settings.dart';
+import 'package:millionaire_quiz/models/user.dart';
 import 'package:millionaire_quiz/screens/game_play/components/dialog/dialog_want_quit_game.dart';
 import 'package:millionaire_quiz/screens/game_play/components/game_play_body.dart';
 import 'file:///D:/code/Millionaire-quiz/lib/screens/game_play/components/dialog/dialog_ask_audience.dart';
@@ -426,6 +428,11 @@ class _GamePlayState extends State<GamePlay>  with TickerProviderStateMixin, Wid
     });
     Score score = Score(currentMoney);
     Score.addLastResult(score);
+
+    //add score to server
+    User.getInstance().then((_user) {
+      LeaderBoard.addGameResult(context, _user.id, currentMoney);
+    });
   }
 
   void initAnswersVisibility() {
