@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 
 class ButtonCircle extends StatelessWidget {
 
-  Icon icon;
+  Widget icon;
   Color borderColor, fillColor;
   Function onPress;
 

@@ -58,6 +58,7 @@ flutter:
     - assets/
     - assets/audio/
     - assets/i18n/
+    - assets/ic_bonus/
   #   - images/a_dot_ham.jpeg
 
   # An image asset can refer to one or more resolution-specific "variants", see

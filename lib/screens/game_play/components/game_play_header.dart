@@ -30,7 +30,8 @@ class GamePlayHeader extends StatelessWidget {
                 this.onExitGame();
               }
           ),
-          width: (MediaQuery.of(context).size.width * 70 / 100) / 5,
+          width: (MediaQuery.of(context).size.width * 65 / 100) / 5,
+          margin: EdgeInsets.only(left: (6.0 / 853) * MediaQuery.of(context).size.height, right: (6.0 / 853) * MediaQuery.of(context).size.height),
         ),
         (currentMoney > 0)?
         Container(
@@ -44,7 +45,7 @@ class GamePlayHeader extends StatelessWidget {
                 textAlign: TextAlign.center,
                 style: new TextStyle(color: Colors.white, fontSize: (18.0 / 853) * MediaQuery.of(context).size.height),
               ),
-              width: MediaQuery.of(context).size.width * 25 / 100,
+              width: MediaQuery.of(context).size.width * 20 / 100,
             ),
             color: Colors.black,
             elevation: 10.0,
@@ -57,42 +58,45 @@ class GamePlayHeader extends StatelessWidget {
         ): Container(),
         Container(
           child: ButtonCircle(
-            Icon(
-              Icons.filter_center_focus,
-              size: (25.0 / 853) * MediaQuery.of(context).size.height,
+            ImageIcon(
+              AssetImage('assets/ic_bonus/ic_hide_answers.png'),
               color: Colors.white,
+              size: (25.0 / 853) * MediaQuery.of(context).size.height,
             ),
-                this.onBonusHideClicked,
+            this.onBonusHideClicked,
             borderColor: hideAnswersBorderColor,
             fillColor: hideAnswersFillColor,
           ),
-          width: (MediaQuery.of(context).size.width * 70 / 100) / 5,
+          width: (MediaQuery.of(context).size.width * 65 / 100) / 5,
+          margin: EdgeInsets.only(left: (6.0 / 853) * MediaQuery.of(context).size.height, right: (6.0 / 853) * MediaQuery.of(context).size.height),
         ),
         Container(
           child: ButtonCircle(
-            Icon(
-              Icons.call,
-              size: (25.0 / 853) * MediaQuery.of(context).size.height,
+            ImageIcon(
+              AssetImage('assets/ic_bonus/ic_call_friend.png'),
               color: Colors.white,
+              size: (25.0 / 853) * MediaQuery.of(context).size.height,
             ),
             this.onBonusCallFriendClicked,
             borderColor: callFriendBorderColor,
             fillColor: callFriendFillColor,
           ),
-          width: (MediaQuery.of(context).size.width * 70 / 100) / 5,
+          width: (MediaQuery.of(context).size.width * 65 / 100) / 5,
+          margin: EdgeInsets.only(left: (6.0 / 853) * MediaQuery.of(context).size.height, right: (6.0 / 853) * MediaQuery.of(context).size.height),
         ),
         Container(
           child: ButtonCircle(
-            Icon(
-              Icons.group,
-              size: (25.0 / 853) * MediaQuery.of(context).size.height,
+            ImageIcon(
+              AssetImage('assets/ic_bonus/ic_ask_audience.png'),
               color: Colors.white,
+              size: (25.0 / 853) * MediaQuery.of(context).size.height,
             ),
             this.onBonusAskAudienceClicked,
             borderColor: askAudienceBorderColor,
             fillColor: askAudienceFillColor,
           ),
-          width: (MediaQuery.of(context).size.width * 70 / 100) / 5,
+          width: (MediaQuery.of(context).size.width * 65 / 100) / 5,
+          margin: EdgeInsets.only(left: (6.0 / 853) * MediaQuery.of(context).size.height, right: (6.0 / 853) * MediaQuery.of(context).size.height),
         )
       ],
     );
