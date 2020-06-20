@@ -1,4 +1,5 @@
 final String BASE_URL = 'http://lyabs243.notifygroup.org/millionaire/';
+final String LINK_TERMS_USE = BASE_URL + 'index.php/terms/';
 
 final int QUESTION_NUMBER = 5;
 final bool SHOW_ADMOB = false;

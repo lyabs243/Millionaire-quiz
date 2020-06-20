@@ -43,5 +43,7 @@
   "want_exit_app": "Voulez-vous quitter cette application ?",
   "exit": "Quitter",
   "want_exit_game": "Vous voulez sortir du jeu ? Toute votre progression sera perdue.",
-  "text_share_app": "Rejoignez-moi en téléchargeant gratuitement le jeu amusant Millionaire Quiz sur "
+  "text_share_app": "Rejoignez-moi en téléchargeant gratuitement le jeu amusant Millionaire Quiz sur ",
+  "term_use_text": "en vous connectant, vous acceptez nos ",
+  "term_use": "Conditions d'utilisation"
 }

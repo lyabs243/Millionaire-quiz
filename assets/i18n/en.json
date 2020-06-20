@@ -43,5 +43,7 @@
   "want_exit_app": "Do you want to exit this app?",
   "exit": "Exit",
   "want_exit_game": "Do you want to exit the game? All your progression will be lose.",
-  "text_share_app": "Join me by downloading the fun Millionaire Quiz game for free on "
+  "text_share_app": "Join me by downloading the fun Millionaire Quiz game for free on ",
+  "term_use_text": "by logging in you accept our ",
+  "term_use": "Terms of use"
 }
