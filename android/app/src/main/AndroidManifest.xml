@@ -7,8 +7,8 @@
          FlutterApplication and put your custom class here. -->
     <application
         android:name="io.flutter.app.FlutterApplication"
-        android:label="millionaire_quiz"
-        android:icon="@mipmap/ic_launcher">
+        android:label="Millionaire Quiz"
+        android:icon="@mipmap/launcher_icon">
         <meta-data
             android:name="com.google.android.gms.ads.APPLICATION_ID"
             android:value="ca-app-pub-3940256099942544~3347511713"/>
